@@ -742,15 +742,15 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(
-                          'assets/svgs/values_logo.svg',
-                          height: 50,
-                          width: 50,
-                          colorFilter: ColorFilter.mode(
-                            AppTheme.surfaceColor,
-                            BlendMode.srcIn,
-                          ),
-                        ),
+                        // SvgPicture.asset(
+                        //   'assets/svgs/values_logo.svg',
+                        //   height: 50,
+                        //   width: 50,
+                        //   colorFilter: ColorFilter.mode(
+                        //     AppTheme.surfaceColor,
+                        //     BlendMode.srcIn,
+                        //   ),
+                        // ),
                         const SizedBox(height: 16),
                         Text(
                           'College Name',
