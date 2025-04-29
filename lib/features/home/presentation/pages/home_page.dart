@@ -571,28 +571,25 @@ class HomePage extends StatelessWidget {
             },
           ),
           const SizedBox(height: 80),
-          Container(
-            color: Colors.amber,
-            child: SizedBox(
-              height: 900,
-              child: GridView.count(
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children:
-                    news
-                        .map(
-                          (news) => _buildNewsCard(
-                            context,
-                            news['title']!,
-                            news['description']!,
-                            news['date']!,
-                            news['category']!,
-                            news['image']!,
-                          ),
-                        )
-                        .toList(),
-              ),
+          SizedBox(
+            height: 950,
+            child: GridView.count(
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children:
+                  news
+                      .map(
+                        (news) => _buildNewsCard(
+                          context,
+                          news['title']!,
+                          news['description']!,
+                          news['date']!,
+                          news['category']!,
+                          news['image']!,
+                        ),
+                      )
+                      .toList(),
             ),
           ),
           const SizedBox(height: 60),
@@ -627,7 +624,7 @@ class HomePage extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: AspectRatio(
-              aspectRatio: 16 / 9,
+              aspectRatio: 21 / 9,
               child: Image.asset(
                 imagePath,
                 fit: BoxFit.cover,
