@@ -9,6 +9,7 @@ import 'package:values_web_app/features/about/about_page.dart';
 import 'package:values_web_app/features/academics/academics_page.dart';
 import 'package:values_web_app/features/admissions/admissions_page.dart';
 import 'package:values_web_app/features/contact/contact_page.dart';
+import 'package:values_web_app/features/gallery/gallery_page.dart';
 
 class Feature {
   final String title;
@@ -52,6 +53,7 @@ class HomePage extends StatelessWidget {
                       _buildNavItem(context, 'About', false),
                       _buildNavItem(context, 'Academics', false),
                       _buildNavItem(context, 'Admissions', false),
+                      _buildNavItem(context, 'Gallery', false),
                       _buildNavItem(context, 'Contact', false),
                     ],
                   ),
@@ -107,6 +109,11 @@ class HomePage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const ContactPage()),
+            );
+          } else if (title == 'Gallery') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const GalleryPage()),
             );
           }
         },
@@ -735,6 +742,16 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SvgPicture.asset(
+                          'assets/svgs/values_logo.svg',
+                          height: 50,
+                          width: 50,
+                          colorFilter: ColorFilter.mode(
+                            AppTheme.surfaceColor,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                         Text(
                           'College Name',
                           style: Theme.of(
@@ -774,22 +791,65 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Contact Us',
+                          'Quick Links',
                           style: Theme.of(
                             context,
-                          ).textTheme.headlineMedium?.copyWith(
+                          ).textTheme.titleLarge?.copyWith(
                             color: AppTheme.surfaceColor,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(height: 16),
+                        _buildFooterLink(context, 'About Us', () {}),
+                        _buildFooterLink(context, 'Academics', () {}),
+                        _buildFooterLink(context, 'Admissions', () {}),
+                        _buildFooterLink(context, 'Contact', () {}),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          ResponsiveRowColumnItem(
+            rowFlex: 1,
+            child: TweenAnimationBuilder(
+              duration: const Duration(milliseconds: 1000),
+              tween: Tween<double>(begin: 0, end: 1),
+              builder: (context, double value, child) {
+                return Transform.translate(
+                  offset: Offset(50 * (1 - value), 0),
+                  child: Opacity(
+                    opacity: value,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          '123 College Street\nCity, State 12345\nPhone: (123) 456-7890\nEmail: info@college.edu',
+                          'Contact Us',
                           style: Theme.of(
                             context,
-                          ).textTheme.bodyLarge?.copyWith(
-                            color: AppTheme.surfaceColor.withOpacity(0.9),
+                          ).textTheme.titleLarge?.copyWith(
+                            color: AppTheme.surfaceColor,
+                            fontWeight: FontWeight.w600,
                           ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildContactInfo(
+                          context,
+                          Icons.location_on,
+                          '123 College Street\nCity, State 12345',
+                        ),
+                        const SizedBox(height: 12),
+                        _buildContactInfo(
+                          context,
+                          Icons.phone,
+                          '(123) 456-7890',
+                        ),
+                        const SizedBox(height: 12),
+                        _buildContactInfo(
+                          context,
+                          Icons.email,
+                          'info@college.edu',
                         ),
                       ],
                     ),
@@ -800,6 +860,43 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildFooterLink(
+    BuildContext context,
+    String text,
+    VoidCallback onTap,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: onTap,
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: AppTheme.surfaceColor.withOpacity(0.9),
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContactInfo(BuildContext context, IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, color: AppTheme.surfaceColor, size: 20),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: AppTheme.surfaceColor.withOpacity(0.9),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
