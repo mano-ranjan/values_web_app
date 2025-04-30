@@ -8,6 +8,14 @@ class AppTheme {
   static const Color teal = Color(0xFF016367);
   static const Color tan = Color(0xFF947062);
 
+  // New Colors for Vibrancy & Consistency
+  static const Color coral = Color(0xFFFF6F61); // For highlights/CTAs
+  static const Color lightGreen = Color(0xFFB7E4C7); // For success/positive
+  static const Color lavender = Color(0xFFE6E6FA); // For backgrounds/accents
+  static const Color deepNavy = Color(
+    0xFF223A5E,
+  ); // For text/section backgrounds
+
   // Derived Colors
   static const Color backgroundColor = mistyBlue;
   static const Color surfaceColor = Colors.white;
