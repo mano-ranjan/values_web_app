@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:values_web_app/shared/theme/app_theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class _GallerySlider extends StatefulWidget {
   final List<Map<String, String>> items;
@@ -61,7 +62,7 @@ class _GallerySliderState extends State<_GallerySlider> {
             return Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(24),
                   child: Image.asset(
                     items[index]['image']!,
                     fit: BoxFit.cover,
@@ -74,23 +75,44 @@ class _GallerySliderState extends State<_GallerySlider> {
                   bottom: 0,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 16,
-                      horizontal: 24,
+                      vertical: 24,
+                      horizontal: 32,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.8),
+                        ],
+                      ),
                       borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(16),
+                        bottom: Radius.circular(24),
                       ),
                     ),
-                    child: Text(
-                      items[index]['caption']!,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          items[index]['caption']!,
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.surfaceColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          items[index]['description']!,
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.surfaceColor.withOpacity(0.9),
+                            fontSize: 16,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
                   ),
                 ),
@@ -99,20 +121,21 @@ class _GallerySliderState extends State<_GallerySlider> {
           },
         ),
         Positioned(
-          bottom: 12,
+          bottom: 24,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               items.length,
-              (index) => Container(
+              (index) => AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
                 margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: _currentPage == index ? 16 : 8,
+                width: _currentPage == index ? 24 : 8,
                 height: 8,
                 decoration: BoxDecoration(
                   color:
                       _currentPage == index
                           ? AppTheme.coral
-                          : AppTheme.lavender,
+                          : AppTheme.surfaceColor.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -179,10 +202,10 @@ class HomePage extends StatelessWidget {
               _buildCampusLifeSection(context),
             ),
             _buildSectionWithKey(_galleryKey, _buildGallerySection(context)),
-            _buildSectionWithKey(_newsKey, _buildNewsSection(context)),
-            _buildStudentStoriesSection(context),
+            // _buildSectionWithKey(_newsKey, _buildNewsSection(context)),
+            // _buildStudentStoriesSection(context),
             _buildBigCTASection(context),
-            _buildFooter(context),
+            _buildSectionWithKey(_contactKey, _buildFooter(context)),
           ],
         ),
       ),
@@ -195,66 +218,90 @@ class HomePage extends StatelessWidget {
 
   // 1. Modern Sticky AppBar
   Widget _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppTheme.deepNavy.withOpacity(0.85),
-      elevation: 0,
-      titleSpacing: 0,
-      toolbarHeight: 56,
-      title: Row(
-        children: [
-          const SizedBox(width: 16),
-          SvgPicture.asset('assets/svgs/values_logo.svg', height: 32),
-          const SizedBox(width: 12),
-          Text(
-            'Values Junior College',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: AppTheme.surfaceColor,
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.deepNavy.withOpacity(0.95),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
-          const Spacer(),
-          _buildNavButton(
-            context,
-            'Academics',
-            () => _scrollToSection(_academicsKey),
-          ),
-          _buildNavButton(
-            context,
-            'Admissions',
-            () => _scrollToSection(_admissionsKey),
-          ),
-          _buildNavButton(
-            context,
-            'Campus Life',
-            () => _scrollToSection(_campusLifeKey),
-          ),
-          _buildNavButton(
-            context,
-            'Gallery',
-            () => _scrollToSection(_galleryKey),
-          ),
-          _buildNavButton(context, 'News', () => _scrollToSection(_newsKey)),
-          // _buildNavButton(
-          //   context,
-          //   'Contact',
-          //   () => _scrollToSection(_contactKey),
-          // ),
-          const SizedBox(width: 8),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.coral,
-              foregroundColor: AppTheme.surfaceColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            ),
-            child: const Text('Apply'),
-          ),
-          const SizedBox(width: 16),
         ],
+      ),
+      child: SafeArea(
+        child: Container(
+          height: 70,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            children: [
+              SvgPicture.asset('assets/svgs/values_logo.svg', height: 40),
+              const SizedBox(width: 16),
+              Text(
+                'Values Junior College',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: AppTheme.surfaceColor,
+                ),
+              ),
+              const Spacer(),
+              _buildNavButton(
+                context,
+                'Academics',
+                () => _scrollToSection(_academicsKey),
+              ),
+              _buildNavButton(
+                context,
+                'Admissions',
+                () => _scrollToSection(_admissionsKey),
+              ),
+              _buildNavButton(
+                context,
+                'Campus Life',
+                () => _scrollToSection(_campusLifeKey),
+              ),
+              _buildNavButton(
+                context,
+                'Gallery',
+                () => _scrollToSection(_galleryKey),
+              ),
+              _buildNavButton(
+                context,
+                'News',
+                () => _scrollToSection(_newsKey),
+              ),
+              _buildNavButton(
+                context,
+                'Contact',
+                () => _scrollToSection(_contactKey),
+              ),
+              const SizedBox(width: 24),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.coral,
+                  foregroundColor: AppTheme.surfaceColor,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
+                child: Text(
+                  'Apply Now',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -266,9 +313,13 @@ class HomePage extends StatelessWidget {
   ) {
     return TextButton(
       onPressed: onTap,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
       child: Text(
         label,
-        style: TextStyle(
+        style: GoogleFonts.poppins(
           color: AppTheme.surfaceColor,
           fontWeight: FontWeight.w500,
           fontSize: 16,
@@ -279,95 +330,159 @@ class HomePage extends StatelessWidget {
 
   // 2. Hero Section
   Widget _buildHeroSection(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          height: 480,
-          width: double.infinity,
-          child: Image.asset('assets/images/college.png', fit: BoxFit.cover),
+    return Container(
+      height: 600,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppTheme.deepNavy, AppTheme.deepNavy.withOpacity(0.9)],
         ),
-        Container(
-          height: 480,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppTheme.deepNavy.withOpacity(0.7),
-                AppTheme.deepNavy.withOpacity(0.3),
-                Colors.transparent,
-              ],
+      ),
+      child: Stack(
+        children: [
+          // Background pattern
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.2,
+              child: Image.asset(
+                'assets/images/college.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        Positioned.fill(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Driven by dreams, guided by values',
-                  style: TextStyle(
-                    color: AppTheme.surfaceColor,
-                    fontSize: 44,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -1.5,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  'We, the pioneers of academic excellence in education, strive to work towards the betterment of the society by igniting the young minds to realize their full potential and bestowing them with the qualities which transform them into global leaders of future generations.',
-                  style: TextStyle(
-                    color: AppTheme.surfaceColor.withOpacity(0.92),
-                    fontSize: 22,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-                Wrap(
-                  spacing: 16,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.coral,
-                        foregroundColor: AppTheme.surfaceColor,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 16,
+          // Content
+          Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.coral.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Text(
+                            'Welcome to Values',
+                            style: GoogleFonts.poppins(
+                              color: AppTheme.coral,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
+                        const SizedBox(height: 24),
+                        Text(
+                          'Shaping Tomorrow\'s\nLeaders Today',
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.surfaceColor,
+                            fontSize: 56,
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'Join our community of learners and discover your potential with our comprehensive educational programs.',
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.surfaceColor.withOpacity(0.8),
+                            fontSize: 18,
+                            height: 1.6,
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.coral,
+                                foregroundColor: AppTheme.surfaceColor,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              child: Text(
+                                'Apply Now',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 24),
+                            TextButton(
+                              onPressed: () {},
+                              style: TextButton.styleFrom(
+                                foregroundColor: AppTheme.surfaceColor,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 16,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Learn More',
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.arrow_forward, size: 20),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 60),
+                  Expanded(
+                    child: Container(
+                      height: 500,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: Image.network(
+                          'https://d20x1nptavktw0.cloudfront.net/wordpress_media/2022/04/Blog-Imagge.jpg',
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      child: const Text('Apply Now'),
                     ),
-                    OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppTheme.surfaceColor,
-                        side: BorderSide(
-                          color: AppTheme.surfaceColor,
-                          width: 2,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 16,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
-                      child: const Text('Visit Campus'),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -379,17 +494,20 @@ class HomePage extends StatelessWidget {
         'icon': Icons.school,
         'description':
             'Discover our innovative programs and learning environment',
+        'color': AppTheme.coral,
       },
       {
         'label': 'Parents',
         'icon': Icons.family_restroom,
         'description':
             'Learn about our values, facilities, and admission process',
+        'color': AppTheme.deepNavy,
       },
       {
         'label': 'Faculty',
         'icon': Icons.badge,
         'description': 'Meet our experienced teaching professionals',
+        'color': AppTheme.teal,
       },
     ];
     return Container(
@@ -402,41 +520,49 @@ class HomePage extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(vertical: 56),
       child: Center(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              decoration: BoxDecoration(
-                color: AppTheme.coral.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                'Explore Values',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 32,
-                  color: AppTheme.deepNavy,
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'Explore Values',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
+                    color: AppTheme.deepNavy,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 40),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 32,
-              runSpacing: 32,
-              children:
-                  audiences
-                      .map(
-                        (aud) => _buildAudienceCard(
-                          context,
-                          aud['label'] as String,
-                          aud['icon'] as IconData,
-                          aud['description'] as String,
-                        ),
-                      )
-                      .toList(),
-            ),
-          ],
+              const SizedBox(height: 40),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 32,
+                runSpacing: 32,
+                children:
+                    audiences
+                        .map(
+                          (aud) => _buildAudienceCard(
+                            context,
+                            aud['label'] as String,
+                            aud['icon'] as IconData,
+                            aud['description'] as String,
+                            aud['color'] as Color,
+                          ),
+                        )
+                        .toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -447,75 +573,92 @@ class HomePage extends StatelessWidget {
     String label,
     IconData icon,
     String description,
+    Color accentColor,
   ) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: Card(
-        color: AppTheme.surfaceColor,
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Container(
-          width: 280,
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppTheme.coral.withOpacity(0.1),
-                  shape: BoxShape.circle,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: 280,
+        height: 380,
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceColor,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 160,
+              decoration: BoxDecoration(
+                color: accentColor.withOpacity(0.1),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
                 ),
-                child: Icon(icon, color: AppTheme.coral, size: 32),
               ),
-              const SizedBox(height: 16),
-              Text(
-                label,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: AppTheme.deepNavy,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: accentColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, color: accentColor, size: 48),
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
-              Text(
-                description,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: AppTheme.deepNavy.withOpacity(0.7),
-                  height: 1.4,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.coral.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Learn More',
-                      style: TextStyle(
-                        color: AppTheme.coral,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Text(
+                    label,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: AppTheme.deepNavy,
                     ),
-                    const SizedBox(width: 6),
-                    Icon(Icons.arrow_forward, color: AppTheme.coral, size: 18),
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    description,
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: AppTheme.deepNavy.withOpacity(0.7),
+                      height: 1.4,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Learn More',
+                        style: GoogleFonts.poppins(
+                          color: accentColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(Icons.arrow_forward, color: accentColor, size: 20),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -588,7 +731,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               label,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 color: AppTheme.deepNavy,
@@ -597,7 +740,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               subtitle,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 14,
                 color: AppTheme.deepNavy.withOpacity(0.7),
               ),
@@ -611,104 +754,244 @@ class HomePage extends StatelessWidget {
   // 5. Academics & Programs
   Widget _buildAcademicsSection(BuildContext context) {
     return Container(
-      color: AppTheme.lavender,
-      padding: const EdgeInsets.symmetric(vertical: 56),
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              'Explore Our Programs',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                color: AppTheme.deepNavy,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Text(
-              'VALUES Junior College',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: AppTheme.coral,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 32,
-              runSpacing: 32,
-              children: [
-                _buildProgramCard(context, Icons.engineering, 'IIT-JEE'),
-                _buildProgramCard(context, Icons.engineering, 'JEE-Mains'),
-                _buildProgramCard(context, Icons.science, 'EAMCET'),
-                _buildProgramCard(context, Icons.local_hospital, 'NEET'),
-                _buildProgramCard(
-                  context,
-                  Icons.menu_book,
-                  'INTERMEDIATE (MPC/BiPC)',
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            Text(
-              'VALUES NEET Academy',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: AppTheme.coral,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 32,
-              runSpacing: 32,
-              children: [
-                _buildProgramCard(context, Icons.school, 'Long Term Regular'),
-                _buildProgramCard(context, Icons.school, 'Long Term SGP'),
-              ],
-            ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.lavender.withOpacity(0.3),
+            AppTheme.lavender.withOpacity(0.1),
           ],
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 80),
+      child: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'Explore Our Programs',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
+                    color: AppTheme.deepNavy,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Comprehensive Education for Future Success',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: AppTheme.deepNavy.withOpacity(0.7),
+                ),
+              ),
+              const SizedBox(height: 60),
+              Container(
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceColor,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'VALUES Junior College',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: AppTheme.coral,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 32,
+                      runSpacing: 32,
+                      children: [
+                        _buildProgramCard(
+                          context,
+                          Icons.engineering,
+                          'IIT-JEE',
+                          'Comprehensive preparation for IIT-JEE Advanced',
+                        ),
+                        _buildProgramCard(
+                          context,
+                          Icons.engineering,
+                          'JEE-Mains',
+                          'Focused training for JEE Mains success',
+                        ),
+                        _buildProgramCard(
+                          context,
+                          Icons.science,
+                          'EAMCET',
+                          'Expert guidance for EAMCET preparation',
+                        ),
+                        _buildProgramCard(
+                          context,
+                          Icons.local_hospital,
+                          'NEET',
+                          'Specialized coaching for medical entrance',
+                        ),
+                        _buildProgramCard(
+                          context,
+                          Icons.menu_book,
+                          'INTERMEDIATE (MPC/BiPC)',
+                          'Strong foundation for future success',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+              Container(
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceColor,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'VALUES NEET Academy',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: AppTheme.coral,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 32,
+                      runSpacing: 32,
+                      children: [
+                        _buildProgramCard(
+                          context,
+                          Icons.school,
+                          'Long Term Regular',
+                          'Comprehensive NEET preparation program',
+                        ),
+                        _buildProgramCard(
+                          context,
+                          Icons.school,
+                          'Long Term SGP',
+                          'Specialized guidance program for NEET',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildProgramCard(BuildContext context, IconData icon, String label) {
-    return Card(
-      color: AppTheme.surfaceColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+  Widget _buildProgramCard(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String description,
+  ) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Card(
+        color: AppTheme.lavender.withOpacity(0.3),
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          width: 280,
+          height: 220,
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, color: AppTheme.coral, size: 36),
-              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: AppTheme.coral, size: 32),
+              ),
+              const SizedBox(height: 16),
               Text(
                 label,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: 18,
                   color: AppTheme.deepNavy,
                 ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 8),
-              OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppTheme.coral,
-                  side: BorderSide(color: AppTheme.coral, width: 2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+              Expanded(
+                child: Text(
+                  description,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: AppTheme.deepNavy.withOpacity(0.7),
+                    height: 1.4,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                child: const Text('Learn More'),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Learn More',
+                      style: GoogleFonts.poppins(
+                        color: AppTheme.coral,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Icon(Icons.arrow_forward, color: AppTheme.coral, size: 16),
+                  ],
+                ),
               ),
             ],
           ),
@@ -745,7 +1028,7 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               'Student Stories',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
                 color: AppTheme.deepNavy,
@@ -793,7 +1076,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               '“$quote”',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontStyle: FontStyle.italic,
                 color: AppTheme.deepNavy,
                 fontSize: 16,
@@ -802,7 +1085,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               '- $name',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 color: AppTheme.deepNavy,
               ),
@@ -829,7 +1112,7 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               'Campus Life',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
                 color: AppTheme.deepNavy,
@@ -875,7 +1158,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               label,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
                 color: AppTheme.deepNavy,
@@ -917,7 +1200,7 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               'News & Events',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
                 color: AppTheme.deepNavy,
@@ -966,7 +1249,7 @@ class HomePage extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   color: AppTheme.deepNavy,
@@ -975,7 +1258,9 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 desc,
-                style: TextStyle(color: AppTheme.deepNavy.withOpacity(0.8)),
+                style: GoogleFonts.poppins(
+                  color: AppTheme.deepNavy.withOpacity(0.8),
+                ),
               ),
               const Spacer(),
               TextButton(
@@ -1000,7 +1285,7 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               'Ready to Start Your Journey?',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: AppTheme.surfaceColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
@@ -1020,9 +1305,12 @@ class HomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'Start Your Application',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
             ),
           ],
@@ -1047,7 +1335,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'Values Junior College',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: AppTheme.surfaceColor,
               fontWeight: FontWeight.bold,
               fontSize: 22,
@@ -1074,21 +1362,27 @@ class HomePage extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
-                style: TextStyle(color: AppTheme.surfaceColor.withOpacity(0.8)),
+                style: GoogleFonts.poppins(
+                  color: AppTheme.surfaceColor.withOpacity(0.8),
+                ),
               ),
               const SizedBox(width: 24),
               Icon(Icons.phone, color: AppTheme.surfaceColor, size: 20),
               const SizedBox(width: 8),
               Text(
                 'Mob: 98480 00267 / 98480 00289.',
-                style: TextStyle(color: AppTheme.surfaceColor.withOpacity(0.8)),
+                style: GoogleFonts.poppins(
+                  color: AppTheme.surfaceColor.withOpacity(0.8),
+                ),
               ),
               const SizedBox(width: 24),
               Icon(Icons.email, color: AppTheme.surfaceColor, size: 20),
               const SizedBox(width: 8),
               Text(
                 'e-mail: info@valuesacademy.in',
-                style: TextStyle(color: AppTheme.surfaceColor.withOpacity(0.8)),
+                style: GoogleFonts.poppins(
+                  color: AppTheme.surfaceColor.withOpacity(0.8),
+                ),
               ),
             ],
           ),
@@ -1120,7 +1414,9 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             '© 2025 Values Junior College. All rights reserved.',
-            style: TextStyle(color: AppTheme.surfaceColor.withOpacity(0.7)),
+            style: GoogleFonts.poppins(
+              color: AppTheme.surfaceColor.withOpacity(0.7),
+            ),
           ),
         ],
       ),
@@ -1132,7 +1428,7 @@ class HomePage extends StatelessWidget {
       onPressed: () {},
       child: Text(
         label,
-        style: TextStyle(
+        style: GoogleFonts.poppins(
           color: AppTheme.surfaceColor,
           fontSize: 16,
           decoration: TextDecoration.underline,
@@ -1151,7 +1447,7 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               'Admissions',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
                 color: AppTheme.deepNavy,
@@ -1160,7 +1456,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               'Join a vibrant, diverse, and supportive community. Discover our admissions process, requirements, and financial aid options.',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 18,
                 color: AppTheme.deepNavy.withOpacity(0.8),
               ),
@@ -1216,7 +1512,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 title,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   color: AppTheme.deepNavy,
@@ -1225,7 +1521,9 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 desc,
-                style: TextStyle(color: AppTheme.deepNavy.withOpacity(0.8)),
+                style: GoogleFonts.poppins(
+                  color: AppTheme.deepNavy.withOpacity(0.8),
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -1245,7 +1543,7 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               'Leadership',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
                 color: AppTheme.deepNavy,
@@ -1324,7 +1622,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text(
                     name,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
                       color: AppTheme.deepNavy,
@@ -1344,7 +1642,7 @@ class HomePage extends StatelessWidget {
                     ),
                     child: Text(
                       title,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: AppTheme.coral,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -1402,7 +1700,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 28),
                   Text(
                     name,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
                       fontSize: 26,
                       color: AppTheme.deepNavy,
@@ -1422,7 +1720,7 @@ class HomePage extends StatelessWidget {
                     ),
                     child: Text(
                       title,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: AppTheme.coral,
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -1443,7 +1741,7 @@ class HomePage extends StatelessWidget {
                     ),
                     child: Text(
                       message,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: AppTheme.deepNavy,
                         height: 1.6,
@@ -1461,7 +1759,7 @@ class HomePage extends StatelessWidget {
                         vertical: 14,
                       ),
                     ),
-                    child: const Text('Close', style: TextStyle(fontSize: 16)),
+                    child: const Text('Close'),
                   ),
                 ],
               ),
@@ -1478,51 +1776,77 @@ class HomePage extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppTheme.lightGreen.withOpacity(0.3),
-            AppTheme.lightGreen.withOpacity(0.1),
+            AppTheme.lightGreen.withOpacity(0.2),
+            AppTheme.lightGreen.withOpacity(0.05),
           ],
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 56),
+      padding: const EdgeInsets.symmetric(vertical: 80),
       child: Center(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              decoration: BoxDecoration(
-                color: AppTheme.coral.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                'Our Vision & Mission',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 32,
-                  color: AppTheme.deepNavy,
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'Our Vision & Mission',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
+                    color: AppTheme.deepNavy,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 40),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 32,
-              runSpacing: 32,
-              children: [
-                _buildVisionMissionCard(
-                  context,
-                  'Vision',
-                  'To be a leading educational institution that nurtures future leaders and innovators through excellence in education and character building.',
-                  Icons.visibility,
+              const SizedBox(height: 16),
+              Text(
+                'Shaping Tomorrow\'s Leaders Today',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: AppTheme.deepNavy.withOpacity(0.7),
                 ),
-                _buildVisionMissionCard(
-                  context,
-                  'Mission',
-                  'To provide world-class education that combines academic excellence with holistic development, preparing students for success in competitive exams and life.',
-                  Icons.flag,
-                ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 60),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: _buildVisionMissionCard(
+                        context,
+                        'Vision',
+                        'To be a leading educational institution that nurtures future leaders and innovators through excellence in education and character building.',
+                        Icons.visibility,
+                        AppTheme.coral,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 40),
+                  Expanded(
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: _buildVisionMissionCard(
+                        context,
+                        'Mission',
+                        'To provide world-class education that combines academic excellence with holistic development, preparing students for success in competitive exams and life.',
+                        Icons.flag,
+                        AppTheme.deepNavy,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1533,47 +1857,67 @@ class HomePage extends StatelessWidget {
     String title,
     String description,
     IconData icon,
+    Color accentColor,
   ) {
-    return Card(
-      color: AppTheme.surfaceColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Container(
-        width: 400,
-        height: 350,
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.coral.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: AppTheme.coral, size: 32),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      padding: const EdgeInsets.all(40),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceColor,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: accentColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
             ),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: AppTheme.deepNavy,
-              ),
+            child: Icon(icon, color: accentColor, size: 32),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
+              color: AppTheme.deepNavy,
             ),
-            const SizedBox(height: 16),
-            Text(
-              description,
-              style: TextStyle(
-                fontSize: 16,
-                color: AppTheme.deepNavy.withOpacity(0.7),
-                height: 1.6,
-              ),
-              textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            description,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              color: AppTheme.deepNavy.withOpacity(0.7),
+              height: 1.6,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Text(
+                'Learn More',
+                style: GoogleFonts.poppins(
+                  color: accentColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(Icons.arrow_forward, color: accentColor, size: 20),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -1655,39 +1999,70 @@ class HomePage extends StatelessWidget {
       },
     ];
     return Container(
-      color: AppTheme.surfaceColor,
-      padding: const EdgeInsets.symmetric(vertical: 56),
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              'Our High Result Oriented Team',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                color: AppTheme.deepNavy,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 32,
-              runSpacing: 32,
-              children:
-                  team
-                      .map(
-                        (member) => _buildTeamCard(
-                          context,
-                          member['name']!,
-                          member['role']!,
-                          member['exp']!,
-                          member['achievements']!,
-                          member['image']!,
-                        ),
-                      )
-                      .toList(),
-            ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.lavender.withOpacity(0.3),
+            AppTheme.lavender.withOpacity(0.1),
           ],
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 80),
+      child: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'Our Expert Faculty',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
+                    color: AppTheme.deepNavy,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Learn from the Best in the Industry',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: AppTheme.deepNavy.withOpacity(0.7),
+                ),
+              ),
+              const SizedBox(height: 60),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 32,
+                runSpacing: 32,
+                children:
+                    team
+                        .map(
+                          (member) => _buildTeamCard(
+                            context,
+                            member['name']!,
+                            member['role']!,
+                            member['exp']!,
+                            member['achievements']!,
+                            member['image']!,
+                          ),
+                        )
+                        .toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1713,71 +2088,157 @@ class HomePage extends StatelessWidget {
               achievements,
               image,
             ),
-        child: Card(
-          color: AppTheme.lavender,
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: 280,
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceColor,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
-          child: SizedBox(
-            width: 320,
-            height: 280,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.coral.withOpacity(0.2),
-                          blurRadius: 8,
-                          spreadRadius: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 320,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(24),
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage(image),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.7),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 24,
+                      left: 24,
+                      right: 24,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name,
+                            style: GoogleFonts.poppins(
+                              color: AppTheme.surfaceColor,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppTheme.coral.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              role,
+                              style: GoogleFonts.poppins(
+                                color: AppTheme.surfaceColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.work_outline,
+                          color: AppTheme.coral,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Experience',
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.deepNavy,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
-                    child: CircleAvatar(
-                      radius: 48,
-                      backgroundImage: AssetImage(image),
-                      backgroundColor: AppTheme.coral.withOpacity(0.1),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: AppTheme.deepNavy,
-                      letterSpacing: 0.5,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.coral.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      role,
-                      style: TextStyle(
-                        color: AppTheme.coral,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                    const SizedBox(height: 8),
+                    Text(
+                      exp,
+                      style: GoogleFonts.poppins(
+                        color: AppTheme.deepNavy.withOpacity(0.7),
+                        fontSize: 14,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.emoji_events_outlined,
+                          color: AppTheme.coral,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Achievements',
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.deepNavy,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      achievements,
+                      style: GoogleFonts.poppins(
+                        color: AppTheme.deepNavy.withOpacity(0.7),
+                        fontSize: 14,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -1825,7 +2286,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text(
                     name,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                       color: AppTheme.deepNavy,
@@ -1845,7 +2306,7 @@ class HomePage extends StatelessWidget {
                     ),
                     child: Text(
                       role,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: AppTheme.coral,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -1877,7 +2338,7 @@ class HomePage extends StatelessWidget {
                             const SizedBox(width: 12),
                             Text(
                               exp,
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: AppTheme.deepNavy.withOpacity(0.7),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
@@ -1898,7 +2359,7 @@ class HomePage extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 achievements,
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: AppTheme.deepNavy.withOpacity(0.7),
                                   fontSize: 15,
                                   height: 1.4,
@@ -1933,50 +2394,172 @@ class HomePage extends StatelessWidget {
     final List<Map<String, String>> galleryItems = [
       {
         'image': 'assets/images/gallery_1.png',
-        'caption': 'Modern Classrooms & Learning Spaces',
+        'caption': 'Spacious Campus Ground',
+        'description':
+            'Our expansive campus ground provides the perfect setting for sports, events, and outdoor activities',
       },
       {
         'image': 'assets/images/gallery_2.png',
-        'caption': 'State-of-the-art Science Labs',
+        'caption': 'Indoor Sports & Recreation',
+        'description':
+            'Students enjoying various indoor games including carrom, chess, and table tennis in our recreation area',
       },
       {
         'image': 'assets/images/gallery_3.png',
-        'caption': 'Vibrant Student Life & Activities',
+        'caption': 'Comfortable Dormitories',
+        'description':
+            'Well-maintained dormitories providing a home-like environment for our residential students',
       },
       {
         'image': 'assets/images/gallery_4.jpeg',
-        'caption': 'Serene Campus Environment',
+        'caption': 'Student Learning Spaces',
+        'description':
+            'Dedicated areas for students to study, collaborate, and relax between classes',
       },
       {
         'image': 'assets/images/gallery_5.jpeg',
-        'caption': 'Sports and Recreation Facilities',
+        'caption': 'Smart Classrooms',
+        'description':
+            'Modern classrooms equipped with smartboards and advanced teaching technology',
       },
       {
         'image': 'assets/images/gallery_6.jpeg',
-        'caption': 'Events and Celebrations',
+        'caption': 'Campus Cafeteria',
+        'description':
+            'Spacious cafeteria serving nutritious meals in a comfortable dining environment',
       },
     ];
     return Container(
-      color: AppTheme.surfaceColor,
-      padding: const EdgeInsets.symmetric(vertical: 56),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.lavender.withOpacity(0.3),
+            AppTheme.lavender.withOpacity(0.1),
+          ],
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 80),
       child: Center(
-        child: Column(
-          children: [
-            Text(
-              'Gallery',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                color: AppTheme.deepNavy,
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'Campus Gallery',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
+                    color: AppTheme.deepNavy,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 32),
-            SizedBox(
-              height: 320,
-              width: 600,
-              child: _GallerySlider(items: galleryItems),
+              const SizedBox(height: 16),
+              Text(
+                'Explore Our World-Class Facilities',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: AppTheme.deepNavy.withOpacity(0.7),
+                ),
+              ),
+              const SizedBox(height: 40),
+              SizedBox(height: 500, child: _GallerySlider(items: galleryItems)),
+              const SizedBox(height: 40),
+              // Wrap(
+              //   alignment: WrapAlignment.center,
+              //   spacing: 16,
+              //   runSpacing: 16,
+              //   children:
+              //       galleryItems
+              //           .map(
+              //             (item) => _buildGalleryThumbnail(
+              //               context,
+              //               item['image']!,
+              //               item['caption']!,
+              //             ),
+              //           )
+              //           .toList(),
+              // ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGalleryThumbnail(
+    BuildContext context,
+    String image,
+    String caption,
+  ) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: 180,
+        height: 120,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              Image.asset(
+                image,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 12,
+                right: 12,
+                bottom: 12,
+                child: Text(
+                  caption,
+                  style: GoogleFonts.poppins(
+                    color: AppTheme.surfaceColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
