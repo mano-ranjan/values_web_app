@@ -178,6 +178,7 @@ class HomePage extends StatelessWidget {
         preferredSize: const Size.fromHeight(56),
         child: _buildAppBar(context),
       ),
+      drawer: _buildDrawer(context),
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
@@ -202,9 +203,6 @@ class HomePage extends StatelessWidget {
               _buildCampusLifeSection(context),
             ),
             _buildSectionWithKey(_galleryKey, _buildGallerySection(context)),
-            // _buildSectionWithKey(_newsKey, _buildNewsSection(context)),
-            // _buildStudentStoriesSection(context),
-            _buildBigCTASection(context),
             _buildSectionWithKey(_contactKey, _buildFooter(context)),
           ],
         ),
@@ -218,6 +216,8 @@ class HomePage extends StatelessWidget {
 
   // 1. Modern Sticky AppBar
   Widget _buildAppBar(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 1000;
+
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.deepNavy.withOpacity(0.95),
@@ -235,6 +235,16 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: [
+              if (isMobile)
+                Builder(
+                  builder:
+                      (context) => IconButton(
+                        icon: Icon(Icons.menu, color: AppTheme.surfaceColor),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                      ),
+                ),
               SvgPicture.asset('assets/svgs/values_logo.svg', height: 40),
               const SizedBox(width: 16),
               Text(
@@ -245,39 +255,135 @@ class HomePage extends StatelessWidget {
                   color: AppTheme.surfaceColor,
                 ),
               ),
-              const Spacer(),
-              _buildNavButton(
-                context,
-                'Academics',
-                () => _scrollToSection(_academicsKey),
+              if (!isMobile) ...[
+                const Spacer(),
+                _buildNavButton(
+                  context,
+                  'Academics',
+                  () => _scrollToSection(_academicsKey),
+                ),
+                _buildNavButton(
+                  context,
+                  'Admissions',
+                  () => _scrollToSection(_admissionsKey),
+                ),
+                _buildNavButton(
+                  context,
+                  'Campus Life',
+                  () => _scrollToSection(_campusLifeKey),
+                ),
+                _buildNavButton(
+                  context,
+                  'Gallery',
+                  () => _scrollToSection(_galleryKey),
+                ),
+                _buildNavButton(
+                  context,
+                  'Contact',
+                  () => _scrollToSection(_contactKey),
+                ),
+                const SizedBox(width: 24),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.coral,
+                    foregroundColor: AppTheme.surfaceColor,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: Text(
+                    'Apply Now',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: AppTheme.deepNavy,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: AppTheme.deepNavy,
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppTheme.coral.withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
               ),
-              _buildNavButton(
-                context,
-                'Admissions',
-                () => _scrollToSection(_admissionsKey),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    'assets/svgs/values_logo.svg',
+                    height: 40,
+                    color: AppTheme.surfaceColor,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Values Junior College',
+                    style: GoogleFonts.poppins(
+                      color: AppTheme.surfaceColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ),
-              _buildNavButton(
-                context,
-                'Campus Life',
-                () => _scrollToSection(_campusLifeKey),
-              ),
-              _buildNavButton(
-                context,
-                'Gallery',
-                () => _scrollToSection(_galleryKey),
-              ),
-              _buildNavButton(
-                context,
-                'News',
-                () => _scrollToSection(_newsKey),
-              ),
-              _buildNavButton(
-                context,
-                'Contact',
-                () => _scrollToSection(_contactKey),
-              ),
-              const SizedBox(width: 24),
-              ElevatedButton(
+            ),
+            _buildDrawerItem(
+              context,
+              'Academics',
+              Icons.school,
+              () => _scrollToSection(_academicsKey),
+            ),
+            _buildDrawerItem(
+              context,
+              'Admissions',
+              Icons.how_to_reg,
+              () => _scrollToSection(_admissionsKey),
+            ),
+            _buildDrawerItem(
+              context,
+              'Campus Life',
+              Icons.people,
+              () => _scrollToSection(_campusLifeKey),
+            ),
+            _buildDrawerItem(
+              context,
+              'Gallery',
+              Icons.photo_library,
+              () => _scrollToSection(_galleryKey),
+            ),
+            _buildDrawerItem(
+              context,
+              'Contact',
+              Icons.contact_mail,
+              () => _scrollToSection(_contactKey),
+            ),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.coral,
@@ -299,10 +405,29 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawerItem(
+    BuildContext context,
+    String title,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
+    return ListTile(
+      leading: Icon(icon, color: AppTheme.surfaceColor),
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(color: AppTheme.surfaceColor, fontSize: 16),
+      ),
+      onTap: () {
+        Navigator.pop(context);
+        onTap();
+      },
     );
   }
 
@@ -330,8 +455,10 @@ class HomePage extends StatelessWidget {
 
   // 2. Hero Section
   Widget _buildHeroSection(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+
     return Container(
-      height: 600,
+      height: isMobile ? 900 : 600,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -341,7 +468,6 @@ class HomePage extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // Background pattern
           Positioned.fill(
             child: Opacity(
               opacity: 0.2,
@@ -351,137 +477,152 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          // Content
           Center(
             child: Container(
               constraints: const BoxConstraints(maxWidth: 1200),
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.coral.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Text(
-                            'Welcome to Values',
-                            style: GoogleFonts.poppins(
-                              color: AppTheme.coral,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Text(
-                          'Shaping Tomorrow\'s\nLeaders Today',
-                          style: GoogleFonts.poppins(
-                            color: AppTheme.surfaceColor,
-                            fontSize: 56,
-                            fontWeight: FontWeight.bold,
-                            height: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Text(
-                          'Join our community of learners and discover your potential with our comprehensive educational programs.',
-                          style: GoogleFonts.poppins(
-                            color: AppTheme.surfaceColor.withOpacity(0.8),
-                            fontSize: 18,
-                            height: 1.6,
-                          ),
-                        ),
-                        const SizedBox(height: 40),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppTheme.coral,
-                                foregroundColor: AppTheme.surfaceColor,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 32,
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                              ),
-                              child: Text(
-                                'Apply Now',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 24),
-                            TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                foregroundColor: AppTheme.surfaceColor,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 32,
-                                  vertical: 16,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Learn More',
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Icon(Icons.arrow_forward, size: 20),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 60),
-                  Expanded(
-                    child: Container(
-                      height: 500,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
+              child:
+                  isMobile
+                      ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildHeroContent(context),
+                          const SizedBox(height: 40),
+                          _buildHeroImage(context),
+                        ],
+                      )
+                      : Row(
+                        children: [
+                          Expanded(child: _buildHeroContent(context)),
+                          const SizedBox(width: 60),
+                          Expanded(child: _buildHeroImage(context)),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: Image.network(
-                          'https://d20x1nptavktw0.cloudfront.net/wordpress_media/2022/04/Blog-Imagge.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHeroContent(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+            color: AppTheme.coral.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            'Welcome to Values',
+            style: GoogleFonts.poppins(
+              color: AppTheme.coral,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Shaping Tomorrow\'s\nLeaders Today',
+          style: GoogleFonts.poppins(
+            color: AppTheme.surfaceColor,
+            fontSize: 56,
+            fontWeight: FontWeight.bold,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Join our community of learners and discover your potential with our comprehensive educational programs.',
+          style: GoogleFonts.poppins(
+            color: AppTheme.surfaceColor.withOpacity(0.8),
+            fontSize: 18,
+            height: 1.6,
+          ),
+        ),
+        const SizedBox(height: 40),
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.coral,
+                foregroundColor: AppTheme.surfaceColor,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Text(
+                'Apply Now',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            const SizedBox(width: 24),
+            TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.surfaceColor,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    'Learn More',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_forward, size: 20),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeroImage(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+
+    return Container(
+      height: isMobile ? 300 : 500,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Image.network(
+          'https://d20x1nptavktw0.cloudfront.net/wordpress_media/2022/04/Blog-Imagge.jpg',
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
       ),
     );
   }
@@ -1321,8 +1462,16 @@ class HomePage extends StatelessWidget {
 
   // 10. Footer
   Widget _buildFooter(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+
     return Container(
-      color: AppTheme.deepNavy,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppTheme.deepNavy, AppTheme.deepNavy.withOpacity(0.9)],
+        ),
+      ),
       padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1341,71 +1490,68 @@ class HomePage extends StatelessWidget {
               fontSize: 22,
             ),
           ),
-          const SizedBox(height: 16),
-          // Wrap(
-          //   alignment: WrapAlignment.center,
-          //   spacing: 32,
-          //   children: [
-          //     _buildFooterLink('About'),
-          //     _buildFooterLink('Academics'),
-          //     _buildFooterLink('Admissions'),
-          //     _buildFooterLink('Campus Life'),
-          //     _buildFooterLink('News'),
-          //     _buildFooterLink('Contact'),
-          //   ],
-          // ),
+          const SizedBox(height: 24),
+          if (isMobile) ...[
+            _buildFooterContactItem(
+              Icons.location_on,
+              'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
+              AppTheme.coral,
+            ),
+            const SizedBox(height: 16),
+            _buildFooterContactItem(
+              Icons.phone,
+              'Mob: 98480 00267 / 98480 00289.',
+              AppTheme.teal,
+            ),
+            const SizedBox(height: 16),
+            _buildFooterContactItem(
+              Icons.email,
+              'e-mail: info@valuesacademy.in',
+              AppTheme.lavender,
+            ),
+          ] else
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildFooterContactItem(
+                  Icons.location_on,
+                  'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
+                  AppTheme.coral,
+                ),
+                const SizedBox(width: 24),
+                _buildFooterContactItem(
+                  Icons.phone,
+                  'Mob: 98480 00267 / 98480 00289.',
+                  AppTheme.teal,
+                ),
+                const SizedBox(width: 24),
+                _buildFooterContactItem(
+                  Icons.email,
+                  'e-mail: info@valuesacademy.in',
+                  AppTheme.lavender,
+                ),
+              ],
+            ),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.location_on, color: AppTheme.surfaceColor, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
-                style: GoogleFonts.poppins(
-                  color: AppTheme.surfaceColor.withOpacity(0.8),
-                ),
-              ),
-              const SizedBox(width: 24),
-              Icon(Icons.phone, color: AppTheme.surfaceColor, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'Mob: 98480 00267 / 98480 00289.',
-                style: GoogleFonts.poppins(
-                  color: AppTheme.surfaceColor.withOpacity(0.8),
-                ),
-              ),
-              const SizedBox(width: 24),
-              Icon(Icons.email, color: AppTheme.surfaceColor, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'e-mail: info@valuesacademy.in',
-                style: GoogleFonts.poppins(
-                  color: AppTheme.surfaceColor.withOpacity(0.8),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
               IconButton(
-                icon: Icon(Icons.facebook, color: AppTheme.surfaceColor),
+                icon: Icon(Icons.facebook, color: AppTheme.coral),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.alternate_email, color: AppTheme.surfaceColor),
+                icon: Icon(Icons.alternate_email, color: AppTheme.teal),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.camera_alt, color: AppTheme.surfaceColor),
+                icon: Icon(Icons.camera_alt, color: AppTheme.lavender),
                 onPressed: () {},
               ),
               IconButton(
                 icon: Icon(
                   Icons.youtube_searched_for,
-                  color: AppTheme.surfaceColor,
+                  color: AppTheme.lightGreen,
                 ),
                 onPressed: () {},
               ),
@@ -1417,23 +1563,29 @@ class HomePage extends StatelessWidget {
             style: GoogleFonts.poppins(
               color: AppTheme.surfaceColor.withOpacity(0.7),
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFooterLink(String label) {
-    return TextButton(
-      onPressed: () {},
-      child: Text(
-        label,
-        style: GoogleFonts.poppins(
-          color: AppTheme.surfaceColor,
-          fontSize: 16,
-          decoration: TextDecoration.underline,
+  Widget _buildFooterContactItem(IconData icon, String text, Color iconColor) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: iconColor, size: 20),
+        const SizedBox(width: 8),
+        Flexible(
+          child: Text(
+            text,
+            style: GoogleFonts.poppins(
+              color: AppTheme.surfaceColor.withOpacity(0.8),
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
-      ),
+      ],
     );
   }
 
