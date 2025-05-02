@@ -374,56 +374,152 @@ class HomePage extends StatelessWidget {
   // 3. Audience Quick Links
   Widget _buildAudienceLinks(BuildContext context) {
     final List<Map<String, dynamic>> audiences = [
-      {'label': 'Prospective Students', 'icon': Icons.school},
-      {'label': 'Current Students', 'icon': Icons.people},
-      {'label': 'Alumni', 'icon': Icons.emoji_events},
-      {'label': 'Parents', 'icon': Icons.family_restroom},
-      {'label': 'Faculty & Staff', 'icon': Icons.badge},
+      {
+        'label': 'Prospective Students',
+        'icon': Icons.school,
+        'description': 'Explore programs, admissions, and campus life',
+      },
+      {
+        'label': 'Current Students',
+        'icon': Icons.people,
+        'description': 'Access resources, events, and support services',
+      },
+      {
+        'label': 'Alumni',
+        'icon': Icons.emoji_events,
+        'description': 'Stay connected and explore opportunities',
+      },
+      {
+        'label': 'Parents',
+        'icon': Icons.family_restroom,
+        'description': 'Information and resources for parents',
+      },
+      {
+        'label': 'Faculty & Staff',
+        'icon': Icons.badge,
+        'description': 'Resources and tools for faculty members',
+      },
     ];
     return Container(
-      color: AppTheme.lavender,
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppTheme.lavender, AppTheme.lavender.withOpacity(0.8)],
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 56),
       child: Center(
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 32,
-          runSpacing: 24,
-          children:
-              audiences
-                  .map(
-                    (aud) => _buildAudienceCard(
-                      context,
-                      aud['label'] as String,
-                      aud['icon'] as IconData,
-                    ),
-                  )
-                  .toList(),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                color: AppTheme.coral.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Text(
+                'Quick Links',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                  color: AppTheme.deepNavy,
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 32,
+              runSpacing: 32,
+              children:
+                  audiences
+                      .map(
+                        (aud) => _buildAudienceCard(
+                          context,
+                          aud['label'] as String,
+                          aud['icon'] as IconData,
+                          aud['description'] as String,
+                        ),
+                      )
+                      .toList(),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildAudienceCard(BuildContext context, String label, IconData icon) {
-    return Card(
-      color: AppTheme.surfaceColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+  Widget _buildAudienceCard(
+    BuildContext context,
+    String label,
+    IconData icon,
+    String description,
+  ) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Card(
+        color: AppTheme.surfaceColor,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          width: 240,
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, color: AppTheme.coral, size: 36),
-              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: AppTheme.coral, size: 32),
+              ),
+              const SizedBox(height: 16),
               Text(
                 label,
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                   color: AppTheme.deepNavy,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppTheme.deepNavy.withOpacity(0.7),
+                  height: 1.4,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Learn More',
+                      style: TextStyle(
+                        color: AppTheme.coral,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Icon(Icons.arrow_forward, color: AppTheme.coral, size: 16),
+                  ],
                 ),
               ),
             ],
@@ -1144,12 +1240,14 @@ class HomePage extends StatelessWidget {
                   'INDIRA GARIKAPATI',
                   'MBA (UK)\nManaging Director',
                   'Driven by dreams, guided by values\n\nIn today\'s competitive world of Education, parent and student aspirations are growing high. ... We value your aspirations with value based teaching-learning process.',
+                  'assets/images/staff_indira.jpeg',
                 ),
                 _buildLeaderCard(
                   context,
                   'DURGA PRASAD KUNTA',
                   'B.Tech (IIT, AMIE), Dip. Gen. Medicine (USA), Dip. Child Psychology (USA), Dip. Educational Management (UK), BA Triple Maths, M.Sc. M.Phil.\nAcademic Director',
                   'Inspiring Passion to Take on Challenges\n\nValues is an initiative to provide an ideal platform for serious IIT-JEE/NEET/SAT aspirants. ... BE PART OF INNOVATION TO BECOME WORLD LEADERS',
+                  'assets/images/staff_durga.jpeg',
                 ),
               ],
             ),
@@ -1164,6 +1262,7 @@ class HomePage extends StatelessWidget {
     String name,
     String title,
     String message,
+    String image,
   ) {
     return Card(
       color: AppTheme.surfaceColor,
@@ -1171,39 +1270,84 @@ class HomePage extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: SizedBox(
         width: 400,
+        height: 480,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                radius: 36,
-                backgroundColor: AppTheme.coral.withOpacity(0.2),
-                child: Icon(Icons.person, size: 40, color: AppTheme.coral),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.coral.withOpacity(0.2),
+                      blurRadius: 8,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: CircleAvatar(
+                  radius: 36,
+                  backgroundImage: AssetImage(image),
+                  backgroundColor: AppTheme.coral.withOpacity(0.1),
+                ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Text(
                 name,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: AppTheme.deepNavy,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                title,
-                style: TextStyle(
-                  color: AppTheme.deepNavy.withOpacity(0.7),
-                  fontSize: 14,
+                  letterSpacing: 0.5,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
-              Text(
-                message,
-                style: TextStyle(color: AppTheme.deepNavy, fontSize: 15),
-                textAlign: TextAlign.left,
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: AppTheme.coral,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceColor,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppTheme.deepNavy.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                        color: AppTheme.deepNavy,
+                        fontSize: 15,
+                        height: 1.5,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -1220,43 +1364,119 @@ class HomePage extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            Text(
-              'Vision & Mission',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                color: AppTheme.deepNavy,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                color: AppTheme.coral.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Text(
+                'Vision & Mission',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                  color: AppTheme.deepNavy,
+                ),
               ),
             ),
-            const SizedBox(height: 32),
-            Text(
-              'Vision',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: AppTheme.coral,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We, the pioneers of academic excellence in education, strive to work towards the betterment of the society by igniting the young minds to realize their full potential and bestowing them with the qualities which transform them into global leaders of future generations. The ambitions of parents and the dreams of students will be realized with well designed and scientific methods of "VALUES JUNIOR COLLEGE" through well trained and dedicated faculty.',
-              style: TextStyle(fontSize: 16, color: AppTheme.deepNavy),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Mission',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: AppTheme.coral,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We aim at providing education which enables learners to have great focus, excellent communication, true leadership qualities, parallel thinking, pro-active approach, positive attitude and ability to manage failure and stress. Communication skills are the most powerful tools to conquer the world and make human a world leader. Learning is to understand the concepts and not byhearting the sentences.',
-              style: TextStyle(fontSize: 16, color: AppTheme.deepNavy),
-              textAlign: TextAlign.center,
+            const SizedBox(height: 40),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      color: AppTheme.lavender.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.deepNavy.withOpacity(0.1),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.coral.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            'Vision',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                              color: AppTheme.coral,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'We, the pioneers of academic excellence in education, strive to work towards the betterment of the society by igniting the young minds to realize their full potential and bestowing them with the qualities which transform them into global leaders of future generations. The ambitions of parents and the dreams of students will be realized with well designed and scientific methods of "VALUES JUNIOR COLLEGE" through well trained and dedicated faculty.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppTheme.deepNavy,
+                            height: 1.6,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      color: AppTheme.lavender.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.deepNavy.withOpacity(0.1),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.coral.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            'Mission',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                              color: AppTheme.coral,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'We aim at providing education which enables learners to have great focus, excellent communication, true leadership qualities, parallel thinking, pro-active approach, positive attitude and ability to manage failure and stress. Communication skills are the most powerful tools to conquer the world and make human a world leader. Learning is to understand the concepts and not byhearting the sentences.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppTheme.deepNavy,
+                            height: 1.6,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -1273,6 +1493,7 @@ class HomePage extends StatelessWidget {
         'exp': '32+ Years experience',
         'achievements':
             'Produced AIR 1 in IIT-JEE (4 times), 5100 IIT selections, 2100 Medical selections, 168 NDA Cadets.',
+        'image': 'assets/images/staff_durga.jpeg',
       },
       {
         'name': 'Dr. M. SATYAMURTHY',
@@ -1280,6 +1501,7 @@ class HomePage extends StatelessWidget {
         'exp': '30 Years experience',
         'achievements':
             'Produced AIR IIT JEE -35 (Dushant), AIR NEET-7 (P.Praveen Kumar), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_satyamurthy.jpeg',
       },
       {
         'name': 'C. NARAYANA SHANKAR',
@@ -1287,20 +1509,7 @@ class HomePage extends StatelessWidget {
         'exp': '30 Years experience',
         'achievements':
             'Produced AIR 5 in NEET 2024 (Avinash), AIR 1 in JEE 2024 (Mukund), Many more ranks below AIR 100.',
-      },
-      {
-        'name': 'Ashish Kumar',
-        'role': 'Sr. Chemistry Faculty',
-        'exp': '20 Years experience',
-        'achievements':
-            'Produced AIR 1 in JEE (Sandeep Pathra), AIR 4 in NEET (Sourabh kumar), AIR 9 in AIIMS (Kaustab Majumdar), Many more ranks below AIR 100.',
-      },
-      {
-        'name': 'V. VENKATESWARA RAO',
-        'role': 'Sr. Chemistry Faculty',
-        'exp': '23 Years experience',
-        'achievements':
-            'Produced AIR 44 in IIT-JEE (Shravan Kumar), NEET 137 (Reshma), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_narayana.jpeg',
       },
       {
         'name': 'SANTHOSH KUMAR JHA',
@@ -1308,6 +1517,23 @@ class HomePage extends StatelessWidget {
         'exp': '28 Years experience',
         'achievements':
             'Produced AIR 4 in NEET (Sourabh kumar), AIR 9 in AIIMS (Kaustab Majumdar), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_santhosh.jpeg',
+      },
+      {
+        'name': 'V. VENKATESWARA RAO',
+        'role': 'Sr. Chemistry Faculty',
+        'exp': '23 Years experience',
+        'achievements':
+            'Produced AIR 44 in IIT-JEE (Shravan Kumar), NEET 137 (Reshma), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_venkateswara.jpeg',
+      },
+      {
+        'name': 'Ashish Kumar',
+        'role': 'Sr. Chemistry Faculty',
+        'exp': '20 Years experience',
+        'achievements':
+            'Produced AIR 1 in JEE (Sandeep Pathra), AIR 4 in NEET (Sourabh kumar), AIR 9 in AIIMS (Kaustab Majumdar), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_ashish.jpeg',
       },
       {
         'name': 'K. SATISH KUMAR',
@@ -1315,6 +1541,7 @@ class HomePage extends StatelessWidget {
         'exp': '19 Years experience',
         'achievements':
             'Produced AIR 9 in NEET 2024 (N.H.Prasanna), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_satish.jpeg',
       },
       {
         'name': 'SANDULA MOHANA KRISHNA',
@@ -1322,6 +1549,7 @@ class HomePage extends StatelessWidget {
         'exp': '18 Years experience',
         'achievements':
             'Produced AIR 4 in NEET 2020 (Vineet Sharma), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_sandula.jpeg',
       },
       {
         'name': 'K. SWAROOPA',
@@ -1329,6 +1557,7 @@ class HomePage extends StatelessWidget {
         'exp': '18 Years experience',
         'achievements':
             'Produced AIR 9 in NEET 2024 (N.H.Prasanna), Many more ranks below AIR 100.',
+        'image': 'assets/images/staff_swaroopa.jpeg',
       },
     ];
     return Container(
@@ -1359,6 +1588,7 @@ class HomePage extends StatelessWidget {
                           member['role']!,
                           member['exp']!,
                           member['achievements']!,
+                          member['image']!,
                         ),
                       )
                       .toList(),
@@ -1375,43 +1605,130 @@ class HomePage extends StatelessWidget {
     String role,
     String exp,
     String achievements,
+    String image,
   ) {
     return Card(
       color: AppTheme.lavender,
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: AppTheme.deepNavy,
+      child: SizedBox(
+        width: 320,
+        height: 380,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.coral.withOpacity(0.2),
+                      blurRadius: 8,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: CircleAvatar(
+                  radius: 36,
+                  backgroundImage: AssetImage(image),
+                  backgroundColor: AppTheme.coral.withOpacity(0.1),
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              role,
-              style: TextStyle(
-                color: AppTheme.deepNavy.withOpacity(0.7),
-                fontSize: 14,
+              const SizedBox(height: 16),
+              Text(
+                name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: AppTheme.deepNavy,
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Experience: $exp',
-              style: TextStyle(color: AppTheme.deepNavy.withOpacity(0.7)),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Achievements: $achievements',
-              style: TextStyle(color: AppTheme.deepNavy.withOpacity(0.7)),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.coral.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  role,
+                  style: TextStyle(
+                    color: AppTheme.coral,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceColor,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppTheme.deepNavy.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.work_outline,
+                              size: 16,
+                              color: AppTheme.deepNavy.withOpacity(0.7),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              exp,
+                              style: TextStyle(
+                                color: AppTheme.deepNavy.withOpacity(0.7),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.emoji_events_outlined,
+                              size: 16,
+                              color: AppTheme.deepNavy.withOpacity(0.7),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                achievements,
+                                style: TextStyle(
+                                  color: AppTheme.deepNavy.withOpacity(0.7),
+                                  fontSize: 13,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1460,8 +1777,8 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             SizedBox(
-              height: 440,
-              width: 900,
+              height: 320,
+              width: 600,
               child: _GallerySlider(items: galleryItems),
             ),
           ],
