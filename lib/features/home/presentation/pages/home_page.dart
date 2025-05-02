@@ -377,27 +377,19 @@ class HomePage extends StatelessWidget {
       {
         'label': 'Prospective Students',
         'icon': Icons.school,
-        'description': 'Explore programs, admissions, and campus life',
-      },
-      {
-        'label': 'Current Students',
-        'icon': Icons.people,
-        'description': 'Access resources, events, and support services',
-      },
-      {
-        'label': 'Alumni',
-        'icon': Icons.emoji_events,
-        'description': 'Stay connected and explore opportunities',
+        'description':
+            'Discover our innovative programs and learning environment',
       },
       {
         'label': 'Parents',
         'icon': Icons.family_restroom,
-        'description': 'Information and resources for parents',
+        'description':
+            'Learn about our values, facilities, and admission process',
       },
       {
-        'label': 'Faculty & Staff',
+        'label': 'Faculty',
         'icon': Icons.badge,
-        'description': 'Resources and tools for faculty members',
+        'description': 'Meet our experienced teaching professionals',
       },
     ];
     return Container(
@@ -419,7 +411,7 @@ class HomePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
-                'Quick Links',
+                'Explore Values',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
@@ -463,7 +455,7 @@ class HomePage extends StatelessWidget {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
-          width: 240,
+          width: 280,
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -481,30 +473,30 @@ class HomePage extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 20,
                   color: AppTheme.deepNavy,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Text(
                 description,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   color: AppTheme.deepNavy.withOpacity(0.7),
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
+                  horizontal: 20,
+                  vertical: 10,
                 ),
                 decoration: BoxDecoration(
                   color: AppTheme.coral.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -514,11 +506,11 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                         color: AppTheme.coral,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14,
+                        fontSize: 15,
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    Icon(Icons.arrow_forward, color: AppTheme.coral, size: 16),
+                    const SizedBox(width: 6),
+                    Icon(Icons.arrow_forward, color: AppTheme.coral, size: 18),
                   ],
                 ),
               ),
@@ -532,10 +524,26 @@ class HomePage extends StatelessWidget {
   // 4. Stats & Highlights
   Widget _buildStatsSection(BuildContext context) {
     final stats = [
-      {'icon': Icons.workspace_premium, 'label': '98% Job Placement'},
-      {'icon': Icons.science, 'label': '#1 in Research'},
-      {'icon': Icons.menu_book, 'label': '150+ Programs'},
-      {'icon': Icons.public, 'label': 'Diverse Community'},
+      {
+        'icon': Icons.workspace_premium,
+        'label': 'Expert Faculty',
+        'subtitle': '30+ Years Experience',
+      },
+      {
+        'icon': Icons.science,
+        'label': 'Modern Labs',
+        'subtitle': 'State-of-the-art Facilities',
+      },
+      {
+        'icon': Icons.menu_book,
+        'label': 'Comprehensive Programs',
+        'subtitle': 'IIT-JEE, NEET & More',
+      },
+      {
+        'icon': Icons.architecture,
+        'label': 'Innovative Learning',
+        'subtitle': 'Future-Ready Education',
+      },
     ];
     return Container(
       color: AppTheme.surfaceColor,
@@ -552,6 +560,7 @@ class HomePage extends StatelessWidget {
                       context,
                       stat['icon'] as IconData,
                       stat['label'] as String,
+                      stat['subtitle'] as String,
                     ),
                   )
                   .toList(),
@@ -560,7 +569,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(BuildContext context, IconData icon, String label) {
+  Widget _buildStatCard(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String subtitle,
+  ) {
     return Card(
       color: AppTheme.lightGreen.withOpacity(0.7),
       elevation: 0,
@@ -571,13 +585,21 @@ class HomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: AppTheme.deepNavy, size: 36),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Text(
               label,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 color: AppTheme.deepNavy,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 14,
+                color: AppTheme.deepNavy.withOpacity(0.7),
               ),
             ),
           ],
@@ -1264,102 +1286,203 @@ class HomePage extends StatelessWidget {
     String message,
     String image,
   ) {
-    return Card(
-      color: AppTheme.surfaceColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: SizedBox(
-        width: 400,
-        height: 480,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.coral.withOpacity(0.2),
-                      blurRadius: 8,
-                      spreadRadius: 1,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => _showLeaderDetails(context, name, title, message, image),
+        child: Card(
+          color: AppTheme.surfaceColor,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: SizedBox(
+            width: 400,
+            height: 320,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.coral.withOpacity(0.2),
+                          blurRadius: 8,
+                          spreadRadius: 1,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: CircleAvatar(
-                  radius: 36,
-                  backgroundImage: AssetImage(image),
-                  backgroundColor: AppTheme.coral.withOpacity(0.1),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: AppTheme.deepNavy,
-                  letterSpacing: 0.5,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.coral.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: AppTheme.coral,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.surfaceColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppTheme.deepNavy.withOpacity(0.1),
-                      width: 1,
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundImage: AssetImage(image),
+                      backgroundColor: AppTheme.coral.withOpacity(0.1),
                     ),
                   ),
-                  child: SingleChildScrollView(
+                  const SizedBox(height: 24),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: AppTheme.deepNavy,
+                      letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.coral.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     child: Text(
-                      message,
+                      title,
                       style: TextStyle(
-                        color: AppTheme.deepNavy,
-                        fontSize: 15,
-                        height: 1.5,
+                        color: AppTheme.coral,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      textAlign: TextAlign.left,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  void _showLeaderDetails(
+    BuildContext context,
+    String name,
+    String title,
+    String message,
+    String image,
+  ) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+              width: 600,
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.coral.withOpacity(0.2),
+                          blurRadius: 8,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundImage: AssetImage(image),
+                      backgroundColor: AppTheme.coral.withOpacity(0.1),
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 26,
+                      color: AppTheme.deepNavy,
+                      letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.coral.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        color: AppTheme.coral,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Container(
+                    padding: const EdgeInsets.all(28),
+                    decoration: BoxDecoration(
+                      color: AppTheme.lavender.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppTheme.deepNavy.withOpacity(0.1),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppTheme.deepNavy,
+                        height: 1.6,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.coral,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 28,
+                        vertical: 14,
+                      ),
+                    ),
+                    child: const Text('Close', style: TextStyle(fontSize: 16)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+    );
+  }
+
   // VISION & MISSION SECTION
   Widget _buildVisionMissionSection(BuildContext context) {
     return Container(
-      color: AppTheme.surfaceColor,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.lightGreen.withOpacity(0.3),
+            AppTheme.lightGreen.withOpacity(0.1),
+          ],
+        ),
+      ),
       padding: const EdgeInsets.symmetric(vertical: 56),
       child: Center(
         child: Column(
@@ -1371,7 +1494,7 @@ class HomePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
-                'Vision & Mission',
+                'Our Vision & Mission',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
@@ -1380,103 +1503,74 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 32,
+              runSpacing: 32,
               children: [
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(32),
-                    decoration: BoxDecoration(
-                      color: AppTheme.lavender.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppTheme.deepNavy.withOpacity(0.1),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.coral.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            'Vision',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                              color: AppTheme.coral,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'We, the pioneers of academic excellence in education, strive to work towards the betterment of the society by igniting the young minds to realize their full potential and bestowing them with the qualities which transform them into global leaders of future generations. The ambitions of parents and the dreams of students will be realized with well designed and scientific methods of "VALUES JUNIOR COLLEGE" through well trained and dedicated faculty.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: AppTheme.deepNavy,
-                            height: 1.6,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
+                _buildVisionMissionCard(
+                  context,
+                  'Vision',
+                  'To be a leading educational institution that nurtures future leaders and innovators through excellence in education and character building.',
+                  Icons.visibility,
                 ),
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(32),
-                    decoration: BoxDecoration(
-                      color: AppTheme.lavender.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppTheme.deepNavy.withOpacity(0.1),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.coral.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            'Mission',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                              color: AppTheme.coral,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'We aim at providing education which enables learners to have great focus, excellent communication, true leadership qualities, parallel thinking, pro-active approach, positive attitude and ability to manage failure and stress. Communication skills are the most powerful tools to conquer the world and make human a world leader. Learning is to understand the concepts and not byhearting the sentences.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: AppTheme.deepNavy,
-                            height: 1.6,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
+                _buildVisionMissionCard(
+                  context,
+                  'Mission',
+                  'To provide world-class education that combines academic excellence with holistic development, preparing students for success in competitive exams and life.',
+                  Icons.flag,
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVisionMissionCard(
+    BuildContext context,
+    String title,
+    String description,
+    IconData icon,
+  ) {
+    return Card(
+      color: AppTheme.surfaceColor,
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        width: 400,
+        height: 350,
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.coral.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: AppTheme.coral, size: 32),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: AppTheme.deepNavy,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              description,
+              style: TextStyle(
+                fontSize: 16,
+                color: AppTheme.deepNavy.withOpacity(0.7),
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -1607,79 +1701,169 @@ class HomePage extends StatelessWidget {
     String achievements,
     String image,
   ) {
-    return Card(
-      color: AppTheme.lavender,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: SizedBox(
-        width: 320,
-        height: 380,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.coral.withOpacity(0.2),
-                      blurRadius: 8,
-                      spreadRadius: 1,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap:
+            () => _showTeamMemberDetails(
+              context,
+              name,
+              role,
+              exp,
+              achievements,
+              image,
+            ),
+        child: Card(
+          color: AppTheme.lavender,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: SizedBox(
+            width: 320,
+            height: 280,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.coral.withOpacity(0.2),
+                          blurRadius: 8,
+                          spreadRadius: 1,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: CircleAvatar(
-                  radius: 36,
-                  backgroundImage: AssetImage(image),
-                  backgroundColor: AppTheme.coral.withOpacity(0.1),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: AppTheme.deepNavy,
-                  letterSpacing: 0.5,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.coral.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  role,
-                  style: TextStyle(
-                    color: AppTheme.coral,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.surfaceColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppTheme.deepNavy.withOpacity(0.1),
-                      width: 1,
+                    child: CircleAvatar(
+                      radius: 48,
+                      backgroundImage: AssetImage(image),
+                      backgroundColor: AppTheme.coral.withOpacity(0.1),
                     ),
                   ),
-                  child: SingleChildScrollView(
+                  const SizedBox(height: 20),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: AppTheme.deepNavy,
+                      letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.coral.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      role,
+                      style: TextStyle(
+                        color: AppTheme.coral,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTeamMemberDetails(
+    BuildContext context,
+    String name,
+    String role,
+    String exp,
+    String achievements,
+    String image,
+  ) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+              width: 500,
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.coral.withOpacity(0.2),
+                          blurRadius: 8,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundImage: AssetImage(image),
+                      backgroundColor: AppTheme.coral.withOpacity(0.1),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: AppTheme.deepNavy,
+                      letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.coral.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Text(
+                      role,
+                      style: TextStyle(
+                        color: AppTheme.coral,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppTheme.lavender.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppTheme.deepNavy.withOpacity(0.1),
+                        width: 1,
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1687,35 +1871,36 @@ class HomePage extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.work_outline,
-                              size: 16,
+                              size: 20,
                               color: AppTheme.deepNavy.withOpacity(0.7),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 12),
                             Text(
                               exp,
                               style: TextStyle(
                                 color: AppTheme.deepNavy.withOpacity(0.7),
                                 fontWeight: FontWeight.w500,
+                                fontSize: 16,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
                               Icons.emoji_events_outlined,
-                              size: 16,
+                              size: 20,
                               color: AppTheme.deepNavy.withOpacity(0.7),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 achievements,
                                 style: TextStyle(
                                   color: AppTheme.deepNavy.withOpacity(0.7),
-                                  fontSize: 13,
+                                  fontSize: 15,
                                   height: 1.4,
                                 ),
                               ),
@@ -1725,12 +1910,22 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
+                  const SizedBox(height: 24),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.coral,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                    child: const Text('Close'),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 
