@@ -36,8 +36,8 @@ class AdmissionsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admissions'),
-        backgroundColor: AppTheme.teal,
-        foregroundColor: AppTheme.surfaceColor,
+        backgroundColor: AppTheme.primary,
+        foregroundColor: AppTheme.surface,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -47,7 +47,7 @@ class AdmissionsPage extends StatelessWidget {
             Text(
               'Admission Requirements',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.teal,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -74,7 +74,7 @@ class AdmissionsPage extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.check_circle,
-                              color: AppTheme.teal,
+                              color: AppTheme.primary,
                               size: 20,
                             ),
                             const SizedBox(width: 12),
@@ -96,7 +96,7 @@ class AdmissionsPage extends StatelessWidget {
             Text(
               'Application Deadlines',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.teal,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -124,7 +124,7 @@ class AdmissionsPage extends StatelessWidget {
                           style: Theme.of(
                             context,
                           ).textTheme.titleLarge?.copyWith(
-                            color: AppTheme.teal,
+                            color: AppTheme.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -132,7 +132,7 @@ class AdmissionsPage extends StatelessWidget {
                         Text(
                           deadline['date'] as String,
                           style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(color: AppTheme.lightTextColor),
+                              ?.copyWith(color: AppTheme.textSecondary),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -150,8 +150,8 @@ class AdmissionsPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.teal,
-                  foregroundColor: AppTheme.surfaceColor,
+                  backgroundColor: AppTheme.primary,
+                  foregroundColor: AppTheme.surface,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
                     vertical: 16,

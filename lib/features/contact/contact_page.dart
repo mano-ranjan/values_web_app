@@ -39,8 +39,8 @@ class ContactPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contact Us'),
-        backgroundColor: AppTheme.teal,
-        foregroundColor: AppTheme.surfaceColor,
+        backgroundColor: AppTheme.primary,
+        foregroundColor: AppTheme.surface,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -50,7 +50,7 @@ class ContactPage extends StatelessWidget {
             Text(
               'Get in Touch',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.teal,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -105,7 +105,7 @@ class ContactPage extends StatelessWidget {
             Text(
               'Department Contacts',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.teal,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -133,14 +133,18 @@ class ContactPage extends StatelessWidget {
                           style: Theme.of(
                             context,
                           ).textTheme.titleLarge?.copyWith(
-                            color: AppTheme.teal,
+                            color: AppTheme.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(Icons.phone, color: AppTheme.teal, size: 20),
+                            Icon(
+                              Icons.phone,
+                              color: AppTheme.primary,
+                              size: 20,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               dept['phone']!,
@@ -151,7 +155,11 @@ class ContactPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(Icons.email, color: AppTheme.teal, size: 20),
+                            Icon(
+                              Icons.email,
+                              color: AppTheme.primary,
+                              size: 20,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               dept['email']!,
@@ -170,8 +178,8 @@ class ContactPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.teal,
-                  foregroundColor: AppTheme.surfaceColor,
+                  backgroundColor: AppTheme.primary,
+                  foregroundColor: AppTheme.surface,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
                     vertical: 16,
@@ -195,7 +203,7 @@ class ContactPage extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: AppTheme.teal, size: 24),
+        Icon(icon, color: AppTheme.primary, size: 24),
         const SizedBox(width: 16),
         Expanded(
           child: Column(
@@ -204,7 +212,7 @@ class ContactPage extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppTheme.teal,
+                  color: AppTheme.primary,
                   fontWeight: FontWeight.w600,
                 ),
               ),

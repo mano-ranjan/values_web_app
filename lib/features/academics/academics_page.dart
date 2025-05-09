@@ -43,8 +43,8 @@ class AcademicsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Academics'),
-        backgroundColor: AppTheme.teal,
-        foregroundColor: AppTheme.surfaceColor,
+        backgroundColor: AppTheme.primary,
+        foregroundColor: AppTheme.surface,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -54,7 +54,7 @@ class AcademicsPage extends StatelessWidget {
             Text(
               'Our Academic Programs',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.teal,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -89,7 +89,7 @@ class AcademicsPage extends StatelessWidget {
               children: [
                 Icon(
                   program['icon'] as IconData,
-                  color: AppTheme.teal,
+                  color: AppTheme.primary,
                   size: 32,
                 ),
                 const SizedBox(width: 16),
@@ -102,14 +102,14 @@ class AcademicsPage extends StatelessWidget {
                         style: Theme.of(
                           context,
                         ).textTheme.headlineSmall?.copyWith(
-                          color: AppTheme.teal,
+                          color: AppTheme.primary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
                         program['degree'] as String,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppTheme.lightTextColor,
+                          color: AppTheme.textSecondary,
                         ),
                       ),
                     ],
@@ -125,12 +125,12 @@ class AcademicsPage extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                Icon(Icons.timer, color: AppTheme.teal, size: 20),
+                Icon(Icons.timer, color: AppTheme.primary, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   'Duration: ${program['duration']}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.teal,
+                    color: AppTheme.primary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -140,8 +140,8 @@ class AcademicsPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.teal,
-                foregroundColor: AppTheme.surfaceColor,
+                backgroundColor: AppTheme.primary,
+                foregroundColor: AppTheme.surface,
               ),
               child: const Text('Learn More'),
             ),

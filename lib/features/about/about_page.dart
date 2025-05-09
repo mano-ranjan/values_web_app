@@ -15,8 +15,8 @@ class AboutPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('About Us'),
-          backgroundColor: AppTheme.teal,
-          foregroundColor: AppTheme.surfaceColor,
+          backgroundColor: AppTheme.primary,
+          foregroundColor: AppTheme.surface,
         ),
         body: BlocBuilder<AboutBloc, AboutState>(
           builder: (context, state) {
@@ -82,12 +82,12 @@ class AboutPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(icon, color: AppTheme.teal, size: 32),
+                Icon(icon, color: AppTheme.primary, size: 32),
                 const SizedBox(width: 16),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: AppTheme.teal,
+                    color: AppTheme.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -115,12 +115,12 @@ class AboutPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.emoji_events, color: AppTheme.teal, size: 32),
+                Icon(Icons.emoji_events, color: AppTheme.primary, size: 32),
                 const SizedBox(width: 16),
                 Text(
                   'Our Achievements',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: AppTheme.teal,
+                    color: AppTheme.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -132,7 +132,7 @@ class AboutPage extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Row(
                   children: [
-                    Icon(Icons.check_circle, color: AppTheme.teal, size: 20),
+                    Icon(Icons.check_circle, color: AppTheme.primary, size: 20),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(

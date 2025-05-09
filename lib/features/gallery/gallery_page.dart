@@ -71,14 +71,14 @@ class GalleryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gallery'),
-        backgroundColor: AppTheme.teal,
-        foregroundColor: AppTheme.surfaceColor,
+        backgroundColor: AppTheme.primary,
+        foregroundColor: AppTheme.surface,
       ),
       body: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            color: AppTheme.surfaceColor,
+            color: AppTheme.surface,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -93,14 +93,14 @@ class GalleryPage extends StatelessWidget {
                           onSelected: (bool selected) {
                             // TODO: Implement filtering
                           },
-                          backgroundColor: AppTheme.surfaceColor,
-                          selectedColor: AppTheme.teal,
-                          checkmarkColor: AppTheme.surfaceColor,
+                          backgroundColor: AppTheme.surface,
+                          selectedColor: AppTheme.primary,
+                          checkmarkColor: AppTheme.surface,
                           labelStyle: TextStyle(
                             color:
                                 category == 'All'
-                                    ? AppTheme.surfaceColor
-                                    : AppTheme.teal,
+                                    ? AppTheme.surface
+                                    : AppTheme.primary,
                           ),
                         ),
                       );
@@ -151,11 +151,11 @@ class GalleryPage extends StatelessWidget {
                   width: double.infinity,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
-                      color: AppTheme.mistyBlue,
+                      color: AppTheme.info,
                       child: Icon(
                         Icons.image,
                         size: 48,
-                        color: AppTheme.teal.withOpacity(0.5),
+                        color: AppTheme.primary.withOpacity(0.5),
                       ),
                     );
                   },
@@ -170,7 +170,7 @@ class GalleryPage extends StatelessWidget {
                   Text(
                     image['title']!,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppTheme.teal,
+                      color: AppTheme.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -178,7 +178,7 @@ class GalleryPage extends StatelessWidget {
                   Text(
                     image['category']!,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.lightTextColor,
+                      color: AppTheme.textSecondary,
                     ),
                   ),
                 ],
