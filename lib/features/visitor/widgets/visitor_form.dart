@@ -14,8 +14,7 @@ class VisitorForm extends StatefulWidget {
 class _VisitorFormState extends State<VisitorForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
+  final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
@@ -23,8 +22,7 @@ class _VisitorFormState extends State<VisitorForm> {
   @override
   void dispose() {
     _emailController.dispose();
-    _firstNameController.dispose();
-    _lastNameController.dispose();
+    _nameController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
@@ -43,8 +41,7 @@ class _VisitorFormState extends State<VisitorForm> {
       // First try to insert the visitor data
       final response =
           await supabase.from('visitors').insert({
-            'first_name': _firstNameController.text.trim(),
-            'last_name': _lastNameController.text.trim(),
+            'name': _nameController.text.trim(),
             'email': _emailController.text.trim(),
             'phone': _phoneController.text.trim(),
           }).select();
@@ -155,9 +152,7 @@ class _VisitorFormState extends State<VisitorForm> {
                           if (_errorMessage != null)
                             InkWell(
                               onTap: () {
-                                print(
-                                  'the error is sjdhcbsjdhc $_errorMessage',
-                                );
+                                print('Error details: $_errorMessage');
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(12),
@@ -180,9 +175,9 @@ class _VisitorFormState extends State<VisitorForm> {
                               ),
                             ),
                           TextFormField(
-                            controller: _firstNameController,
+                            controller: _nameController,
                             decoration: InputDecoration(
-                              labelText: 'First Name',
+                              labelText: 'Full Name',
                               labelStyle: GoogleFonts.poppins(
                                 color: AppTheme.deepNavy.withOpacity(0.7),
                               ),
@@ -194,28 +189,7 @@ class _VisitorFormState extends State<VisitorForm> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your first name';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          TextFormField(
-                            controller: _lastNameController,
-                            decoration: InputDecoration(
-                              labelText: 'Last Name',
-                              labelStyle: GoogleFonts.poppins(
-                                color: AppTheme.deepNavy.withOpacity(0.7),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              filled: true,
-                              fillColor: AppTheme.lavender.withOpacity(0.1),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your last name';
+                                return 'Please enter your name';
                               }
                               return null;
                             },
@@ -249,7 +223,7 @@ class _VisitorFormState extends State<VisitorForm> {
                           TextFormField(
                             controller: _phoneController,
                             decoration: InputDecoration(
-                              labelText: 'Phone Number (Optional)',
+                              labelText: 'Phone Number',
                               labelStyle: GoogleFonts.poppins(
                                 color: AppTheme.deepNavy.withOpacity(0.7),
                               ),
@@ -260,6 +234,15 @@ class _VisitorFormState extends State<VisitorForm> {
                               fillColor: AppTheme.lavender.withOpacity(0.1),
                             ),
                             keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              if (value.length < 10) {
+                                return 'Please enter a valid phone number';
+                              }
+                              return null;
+                            },
                           ),
                           const SizedBox(height: 32),
                           ElevatedButton(
