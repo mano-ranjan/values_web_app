@@ -39,6 +39,7 @@ dependencies:
   flutter_carousel_widget: ^2.2.0
   shimmer: ^3.0.0
   cupertino_icons: ^1.0.8
+  supabase_flutter: ^2.9.0
 
 dev_dependencies:
   flutter_test:

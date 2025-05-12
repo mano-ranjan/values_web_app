@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:values_web_app/shared/theme/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:values_web_app/features/admissions/widgets/registration_form.dart';
 
 class _GallerySlider extends StatefulWidget {
   final List<Map<String, String>> items;
@@ -284,7 +285,12 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(width: 24),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const RegistrationForm(),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.coral,
                     foregroundColor: AppTheme.surfaceColor,
@@ -384,7 +390,12 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const RegistrationForm(),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.coral,
                   foregroundColor: AppTheme.surfaceColor,
@@ -548,7 +559,12 @@ class HomePage extends StatelessWidget {
         Row(
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const RegistrationForm(),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.coral,
                 foregroundColor: AppTheme.surfaceColor,
@@ -1434,7 +1450,12 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const RegistrationForm(),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.surfaceColor,
                 foregroundColor: AppTheme.coral,
