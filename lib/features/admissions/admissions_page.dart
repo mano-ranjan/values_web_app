@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:values_web_app/shared/theme/app_theme.dart';
+import 'package:values_web_app/features/admissions/widgets/registration_form.dart';
 
 class AdmissionsPage extends StatelessWidget {
   const AdmissionsPage({super.key});
+
+  void _showRegistrationForm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => const RegistrationForm(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +156,7 @@ class AdmissionsPage extends StatelessWidget {
             const SizedBox(height: 32),
             Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => _showRegistrationForm(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.teal,
                   foregroundColor: AppTheme.surfaceColor,
