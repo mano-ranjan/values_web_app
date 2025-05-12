@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:values_web_app/shared/theme/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:values_web_app/features/admissions/widgets/registration_form.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:values_web_app/features/visitor/widgets/visitor_form.dart';
 
 class _GallerySlider extends StatefulWidget {
   final List<Map<String, String>> items;
@@ -148,9 +150,14 @@ class _GallerySliderState extends State<_GallerySlider> {
   }
 }
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final GlobalKey _academicsKey = GlobalKey();
   final GlobalKey _admissionsKey = GlobalKey();
   final GlobalKey _campusLifeKey = GlobalKey();
@@ -158,6 +165,34 @@ class HomePage extends StatelessWidget {
   final GlobalKey _contactKey = GlobalKey();
   final GlobalKey _galleryKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkVisitorStatus();
+  }
+
+  Future<void> _checkVisitorStatus() async {
+    try {
+      final supabase = Supabase.instance.client;
+      // Try to get the visitor submission status
+      await supabase.storage
+          .from('visitor_preferences')
+          .download('visitor_submitted.txt');
+      // If we get here, the file exists, so visitor has already submitted
+    } catch (e) {
+      // If file doesn't exist, show the visitor form
+      if (mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const VisitorForm(),
+          );
+        });
+      }
+    }
+  }
 
   void _scrollToSection(GlobalKey key) {
     final context = key.currentContext;
