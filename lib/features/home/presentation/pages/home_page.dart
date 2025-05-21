@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:values_web_app/features/admissions/widgets/registration_form.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:values_web_app/features/visitor/widgets/visitor_form.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class _GallerySlider extends StatefulWidget {
   final List<Map<String, String>> items;
@@ -1667,27 +1669,24 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                icon: Icon(Icons.facebook, color: AppTheme.coral),
-                onPressed: () {},
+              InkWell(
+                onTap:
+                    () => _launchSocialMedia(
+                      'https://www.linkedin.com/in/values-academy-aa122b365/',
+                    ),
+                child: Image.asset('assets/images/linkedin.png', height: 28),
               ),
-              IconButton(
-                icon: Icon(Icons.alternate_email, color: AppTheme.teal),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(Icons.camera_alt, color: AppTheme.lavender),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.youtube_searched_for,
-                  color: AppTheme.lightGreen,
-                ),
-                onPressed: () {},
+              const SizedBox(width: 16),
+              InkWell(
+                onTap:
+                    () => _launchSocialMedia(
+                      'https://www.instagram.com/academyvalues/?igsh=cmoyMWN4MWszM3E%3D#',
+                    ),
+                child: Image.asset('assets/images/instagram.png', height: 28),
               ),
             ],
           ),
+
           const SizedBox(height: 24),
           Text(
             '© 2025 Values Junior College. All rights reserved.',
@@ -1769,12 +1768,12 @@ class _HomePageState extends State<HomePage> {
                   'Schedule a tour or attend an info session.',
                   false,
                 ),
-                _buildAdmissionsCard(
-                  Icons.question_answer,
-                  'FAQs',
-                  'Find answers to common questions.',
-                  false,
-                ),
+                // _buildAdmissionsCard(
+                //   Icons.question_answer,
+                //   'FAQs',
+                //   'Find answers to common questions.',
+                //   false,
+                // ),
               ],
             ),
           ],
@@ -2923,5 +2922,32 @@ In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., wit
         ),
       ),
     );
+  }
+
+  Future<void> _launchSocialMedia(String url) async {
+    try {
+      final Uri uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Could not open the link'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening link: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }
