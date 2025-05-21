@@ -27,20 +27,32 @@ class _GallerySliderState extends State<_GallerySlider> {
     super.initState();
     items = widget.items;
     _controller = PageController();
-    // Auto-rotate
-    Future.delayed(const Duration(milliseconds: 500), _startAutoScroll);
   }
 
-  void _startAutoScroll() async {
-    while (mounted) {
-      await Future.delayed(const Duration(seconds: 3));
-      if (!mounted) break;
-      int nextPage = (_currentPage + 1) % items.length;
-      _controller.animateToPage(
-        nextPage,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
+  Future<void> _launchSocialMedia(String url) async {
+    try {
+      final Uri uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Could not open the link'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening link: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -53,7 +65,7 @@ class _GallerySliderState extends State<_GallerySlider> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.center,
       children: [
         PageView.builder(
           controller: _controller,
@@ -64,67 +76,73 @@ class _GallerySliderState extends State<_GallerySlider> {
             });
           },
           itemBuilder: (context, index) {
-            return Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: Image.asset(
-                    items[index]['image']!,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 24,
-                      horizontal: 32,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.8),
-                        ],
-                      ),
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(24),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          items[index]['caption']!,
-                          style: GoogleFonts.poppins(
-                            color: AppTheme.surfaceColor,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          items[index]['description']!,
-                          style: GoogleFonts.poppins(
-                            color: AppTheme.surfaceColor.withOpacity(0.9),
-                            fontSize: 16,
-                            height: 1.4,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
+            final item = items[index];
+            if (item['type'] == 'video') {
+              return _buildVideoSlide(item['videoUrl']!);
+            } else {
+              return _buildImageSlide(item['image']!);
+            }
           },
         ),
+        // Left Arrow
+        Positioned(
+          left: 16,
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () {
+                if (_currentPage > 0) {
+                  _controller.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: AppTheme.surfaceColor,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Right Arrow
+        Positioned(
+          right: 16,
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () {
+                if (_currentPage < items.length - 1) {
+                  _controller.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppTheme.surfaceColor,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Page Indicator
         Positioned(
           bottom: 24,
           child: Row(
@@ -148,6 +166,108 @@ class _GallerySliderState extends State<_GallerySlider> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildImageSlide(String imagePath) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: Image.network(
+        imagePath,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Center(
+            child: CircularProgressIndicator(
+              value:
+                  loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+              color: AppTheme.coral,
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: AppTheme.lavender.withOpacity(0.3),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, color: AppTheme.coral, size: 48),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Failed to load image',
+                    style: GoogleFonts.poppins(
+                      color: AppTheme.deepNavy,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildVideoSlide(String videoUrl) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            color: Colors.black,
+            child: Center(
+              child: IconButton(
+                icon: const Icon(
+                  Icons.play_circle_fill,
+                  color: Colors.white,
+                  size: 80,
+                ),
+                onPressed: () {
+                  _launchSocialMedia(videoUrl);
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            left: 16,
+            right: 16,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.play_arrow,
+                    color: AppTheme.surfaceColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Click to watch video',
+                    style: GoogleFonts.poppins(
+                      color: AppTheme.surfaceColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -1096,7 +1216,7 @@ class _HomePageState extends State<HomePage> {
                           context,
                           Icons.school,
                           'Long Term SGP',
-                          'Specialized guidance program for NEET',
+                          'Exclusive NEET batch with limited seats, advanced academics, strict eligibility, and holistic care. Seat Guarantee for top performers.',
                         ),
                       ],
                     ),
@@ -1116,6 +1236,106 @@ class _HomePageState extends State<HomePage> {
     String description,
     IconData icon,
   ) {
+    if (label == 'Long Term SGP') {
+      showDialog(
+        context: context,
+        builder:
+            (context) => Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Container(
+                width: 600,
+                padding: const EdgeInsets.all(32),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            color: AppTheme.coral.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(icon, color: AppTheme.coral, size: 48),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: Text(
+                          label,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            color: AppTheme.deepNavy,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      _buildSectionTitle('Information'),
+                      _buildBulletList([
+                        'Only for NEET aspirants (separate batch for boys & girls, 25 students each)',
+                        'Printed & digital content provided; digital content accessible in computer labs',
+                        'Every third Sunday is an outing day',
+                        'No major holidays except for major festivals (1-2 days)',
+                      ]),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Academics'),
+                      _buildBulletList([
+                        'Physics & Chemistry taught to JEE Mains level for better NEET scores',
+                        '36 MAT classes/year for analytical skills & speed',
+                        '1.5 hrs teaching + 1.5 hrs supervised self-study per subject',
+                        'Daily 1 hr "What You Need" session',
+                        'High-end tech classrooms, expert faculty, audio-visual support',
+                        'Seminar lectures by students (random selection)',
+                      ]),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Eligibility'),
+                      _buildBulletList([
+                        'NEET: 350(OC), 300(BC), 250(SC/ST) in recent exam',
+                        'OR 98%+ in CBSE/+2 or 100% in Intermediate theory',
+                        'OR Diagnostic test: 175(OC), 150(BC), 125(SC/ST) at Values NEET Academy',
+                      ]),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Rules & Regulations'),
+                      _buildBulletList([
+                        'No health issues that hamper work; medical issues move student to regular batch',
+                        'Strict adherence to rules; 3 warnings = move to regular batch',
+                        'Max 6 days absence/year (beyond with principal & faculty permission)',
+                        'All tests & assignments mandatory; 5 missed assignments = move to regular batch',
+                      ]),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Health Care'),
+                      _buildBulletList([
+                        '20 min meditation (5:40–6:00 AM)',
+                        'Standard diet, healthy food, limited oil',
+                        '30 min daily physical activity',
+                      ]),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppTheme.coral,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 28,
+                              vertical: 14,
+                            ),
+                          ),
+                          child: const Text('Close'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+      );
+      return;
+    }
     showDialog(
       context: context,
       builder:
@@ -1266,6 +1486,49 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          color: AppTheme.coral,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBulletList(List<String> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+          items
+              .map(
+                (item) => Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('• ', style: TextStyle(fontSize: 16)),
+                      Expanded(
+                        child: Text(
+                          item,
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: AppTheme.deepNavy.withOpacity(0.85),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
     );
   }
 
@@ -2752,40 +3015,42 @@ In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., wit
   Widget _buildGallerySection(BuildContext context) {
     final List<Map<String, String>> galleryItems = [
       {
-        'image': 'assets/images/gallery_1.png',
-        'caption': 'Spacious Campus Ground',
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images//DSC_0078.JPG',
+        'caption': 'Campus Life',
         'description':
-            'Our expansive campus ground provides the perfect setting for sports, events, and outdoor activities',
+            'Experience the vibrant campus life at Values Junior College',
       },
       {
-        'image': 'assets/images/gallery_2.png',
-        'caption': 'Indoor Sports & Recreation',
-        'description':
-            'Students enjoying various indoor games including carrom, chess, and table tennis in our recreation area',
+        'type': 'video',
+        'videoUrl':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/videos//WhatsApp%20Video%202025-05-21%20at%2011.12.38%20AM.mp4',
+        'caption': 'Campus Tour',
+        'description': 'Take a virtual tour of our state-of-the-art facilities',
       },
       {
-        'image': 'assets/images/gallery_3.png',
-        'caption': 'Comfortable Dormitories',
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images//DSC_0079.JPG',
+        'caption': 'Learning Environment',
         'description':
-            'Well-maintained dormitories providing a home-like environment for our residential students',
+            'Modern classrooms designed for optimal learning experience',
       },
       {
-        'image': 'assets/images/gallery_4.jpeg',
-        'caption': 'Student Learning Spaces',
+        'type': 'video',
+        'videoUrl':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/videos//WhatsApp%20Video%202025-05-21%20at%2011.13.03%20AM.mp4',
+        'caption': 'Student Activities',
         'description':
-            'Dedicated areas for students to study, collaborate, and relax between classes',
+            'Watch our students engage in various activities and events',
       },
       {
-        'image': 'assets/images/gallery_5.jpeg',
-        'caption': 'Smart Classrooms',
-        'description':
-            'Modern classrooms equipped with smartboards and advanced teaching technology',
-      },
-      {
-        'image': 'assets/images/gallery_6.jpeg',
-        'caption': 'Campus Cafeteria',
-        'description':
-            'Spacious cafeteria serving nutritious meals in a comfortable dining environment',
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images//WhatsApp%20Image%202025-05-21%20at%2011.12.55%20AM.jpeg',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
       },
     ];
     return Container(
