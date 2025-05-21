@@ -257,7 +257,7 @@ class _HomePageState extends State<HomePage> {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.deepNavy.withOpacity(0.95),
+        color: AppTheme.backgroundColor.withOpacity(0.95),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -282,16 +282,16 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                 ),
-              SvgPicture.asset('assets/svgs/values_logo.svg', height: 40),
+              Image.asset('assets/images/values_logo.png', height: 40),
               const SizedBox(width: 16),
-              Text(
-                'Values Junior College',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: AppTheme.surfaceColor,
-                ),
-              ),
+              // Text(
+              //   'Values Junior College',
+              //   style: GoogleFonts.poppins(
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: 20,
+              //     color: AppTheme.surfaceColor,
+              //   ),
+              // ),
               if (!isMobile) ...[
                 const Spacer(),
                 _buildNavButton(
@@ -375,20 +375,16 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SvgPicture.asset(
-                    'assets/svgs/values_logo.svg',
-                    height: 40,
-                    color: AppTheme.surfaceColor,
-                  ),
+                  Image.asset('assets/images/values_logo.png', height: 40),
                   const SizedBox(height: 16),
-                  Text(
-                    'Values Junior College',
-                    style: GoogleFonts.poppins(
-                      color: AppTheme.surfaceColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
+                  // Text(
+                  //   'Values Junior College',
+                  //   style: GoogleFonts.poppins(
+                  //     color: AppTheme.surfaceColor,
+                  //     fontWeight: FontWeight.bold,
+                  //     fontSize: 20,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -492,7 +488,7 @@ class _HomePageState extends State<HomePage> {
       child: Text(
         label,
         style: GoogleFonts.poppins(
-          color: AppTheme.surfaceColor,
+          color: AppTheme.deepNavy,
           fontWeight: FontWeight.w500,
           fontSize: 16,
         ),
@@ -1027,31 +1023,31 @@ class _HomePageState extends State<HomePage> {
                           context,
                           Icons.engineering,
                           'IIT-JEE',
-                          'Comprehensive preparation for IIT-JEE Advanced',
+                          'Crack IIT-JEE with in-depth concept clarity, smart strategies, and consistent test practice from our top mentors.',
                         ),
                         _buildProgramCard(
                           context,
                           Icons.engineering,
                           'JEE-Mains',
-                          'Focused training for JEE Mains success',
+                          'Get JEE-Mains ready with our dedicated modules, mock tests, and guidance to boost your rank and confidence.',
                         ),
                         _buildProgramCard(
                           context,
                           Icons.science,
                           'EAMCET',
-                          'Expert guidance for EAMCET preparation',
+                          'Score high in EAMCET with targeted preparation, comprehensive study plans, and personalized attention.',
                         ),
                         _buildProgramCard(
                           context,
                           Icons.local_hospital,
                           'NEET',
-                          'Specialized coaching for medical entrance',
+                          'Ace your medical entrance with expert faculty, daily practice, and doubt sessions tailored for NEET success.',
                         ),
                         _buildProgramCard(
                           context,
                           Icons.menu_book,
                           'INTERMEDIATE (MPC/BiPC)',
-                          'Strong foundation for future success',
+                          'Build a strong foundation in Maths, Physics & Chemistry with our MPC program focused on both academics and competitive exams.',
                         ),
                       ],
                     ),
@@ -1112,6 +1108,83 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _showProgramDetails(
+    BuildContext context,
+    String label,
+    String description,
+    IconData icon,
+  ) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+              width: 500,
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppTheme.coral.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(icon, color: AppTheme.coral, size: 48),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    label,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: AppTheme.deepNavy,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppTheme.lavender.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppTheme.deepNavy.withOpacity(0.1),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      description,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: AppTheme.deepNavy.withOpacity(0.8),
+                        height: 1.6,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.coral,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 28,
+                        vertical: 14,
+                      ),
+                    ),
+                    child: const Text('Close'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+    );
+  }
+
   Widget _buildProgramCard(
     BuildContext context,
     IconData icon,
@@ -1126,7 +1199,7 @@ class _HomePageState extends State<HomePage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
           width: 280,
-          height: 220,
+          height: 240,
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1151,42 +1224,40 @@ class _HomePageState extends State<HomePage> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: Text(
-                  description,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: AppTheme.deepNavy.withOpacity(0.7),
-                    height: 1.4,
+
+              const SizedBox(height: 28),
+              GestureDetector(
+                onTap:
+                    () =>
+                        _showProgramDetails(context, label, description, icon),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.coral.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Learn More',
-                      style: GoogleFonts.poppins(
-                        color: AppTheme.coral,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
+                  decoration: BoxDecoration(
+                    color: AppTheme.coral.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Learn More',
+                        style: GoogleFonts.poppins(
+                          color: AppTheme.coral,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 6),
-                    Icon(Icons.arrow_forward, color: AppTheme.coral, size: 16),
-                  ],
+                      const SizedBox(width: 6),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: AppTheme.coral,
+                        size: 16,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -1637,7 +1708,7 @@ class _HomePageState extends State<HomePage> {
         Icon(icon, color: iconColor, size: 20),
         const SizedBox(width: 8),
         Flexible(
-          child: Text(
+          child: SelectableText(
             text,
             style: GoogleFonts.poppins(
               color: AppTheme.surfaceColor.withOpacity(0.8),
@@ -1684,21 +1755,25 @@ class _HomePageState extends State<HomePage> {
                   Icons.assignment_turned_in,
                   'How to Apply',
                   'Step-by-step guide to your application.',
+                  true,
                 ),
                 _buildAdmissionsCard(
                   Icons.attach_money,
                   'Financial Aid',
                   'Explore scholarships, grants, and aid.',
+                  false,
                 ),
                 _buildAdmissionsCard(
                   Icons.event,
                   'Visit Campus',
                   'Schedule a tour or attend an info session.',
+                  false,
                 ),
                 _buildAdmissionsCard(
                   Icons.question_answer,
                   'FAQs',
                   'Find answers to common questions.',
+                  false,
                 ),
               ],
             ),
@@ -1708,37 +1783,51 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAdmissionsCard(IconData icon, String title, String desc) {
-    return Card(
-      color: AppTheme.lavender,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: SizedBox(
-        width: 260,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: AppTheme.coral, size: 36),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: AppTheme.deepNavy,
+  Widget _buildAdmissionsCard(
+    IconData icon,
+    String title,
+    String desc,
+    bool isTappable,
+  ) {
+    return GestureDetector(
+      onTap:
+          isTappable
+              ? () => showDialog(
+                context: context,
+                builder: (context) => const RegistrationForm(),
+              )
+              : null,
+      child: Card(
+        color: AppTheme.lavender,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: SizedBox(
+          width: 260,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, color: AppTheme.coral, size: 36),
+                const SizedBox(height: 12),
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: AppTheme.deepNavy,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                desc,
-                style: GoogleFonts.poppins(
-                  color: AppTheme.deepNavy.withOpacity(0.8),
+                const SizedBox(height: 8),
+                Text(
+                  desc,
+                  style: GoogleFonts.poppins(
+                    color: AppTheme.deepNavy.withOpacity(0.8),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

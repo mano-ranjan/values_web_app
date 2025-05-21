@@ -27,7 +27,96 @@ class _RegistrationFormState extends State<RegistrationForm> {
     super.dispose();
   }
 
-  Future<void> _downloadForm() async {
+  Future<void> _showDownloadOptions() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Select Application Form',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.deepNavy,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _downloadForm(
+                          'inter_admission_form.pdf',
+                          'Inter Application',
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.teal,
+                        foregroundColor: AppTheme.surfaceColor,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        'Inter Application',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _downloadForm(
+                          'longterm_admission_form.pdf',
+                          'Long Term Application',
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.coral,
+                        foregroundColor: AppTheme.surfaceColor,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        'Long Term Application',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadForm(String fileName, String formType) async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -37,15 +126,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
       final supabase = Supabase.instance.client;
       final String publicUrl = await supabase.storage
           .from('admission-forms')
-          .getPublicUrl('admission_form.pdf');
+          .getPublicUrl(fileName);
 
       final Uri url = Uri.parse(publicUrl);
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Application form downloaded successfully!'),
+            SnackBar(
+              content: Text('$formType form downloaded successfully!'),
               backgroundColor: Colors.green,
             ),
           );
@@ -252,7 +341,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                             ),
                           ),
                         ElevatedButton.icon(
-                          onPressed: _isLoading ? null : _downloadForm,
+                          onPressed: _isLoading ? null : _showDownloadOptions,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.teal,
                             foregroundColor: AppTheme.surfaceColor,
