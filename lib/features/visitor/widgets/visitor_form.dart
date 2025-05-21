@@ -90,7 +90,7 @@ class _VisitorFormState extends State<VisitorForm> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false, // Prevent back button from dismissing
+      canPop: true, // Prevent back button from dismissing
       child: Dialog(
         insetPadding: EdgeInsets.zero,
         child: Container(

@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showDialog(
             context: context,
-            barrierDismissible: false,
+            barrierDismissible: true,
             builder: (context) => const VisitorForm(),
           );
         });
@@ -223,8 +223,9 @@ class _HomePageState extends State<HomePage> {
             _buildHeroSection(context),
             _buildLeadershipSection(context),
             _buildVisionMissionSection(context),
-            _buildTeamSection(context),
             _buildAudienceLinks(context),
+            _buildTeamSection(context),
+
             _buildStatsSection(context),
             _buildSectionWithKey(
               _academicsKey,
@@ -621,29 +622,29 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(width: 24),
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                foregroundColor: AppTheme.surfaceColor,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
-                ),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    'Learn More',
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.arrow_forward, size: 20),
-                ],
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {},
+            //   style: TextButton.styleFrom(
+            //     foregroundColor: AppTheme.surfaceColor,
+            //     padding: const EdgeInsets.symmetric(
+            //       horizontal: 32,
+            //       vertical: 16,
+            //     ),
+            //   ),
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         'Learn More',
+            //         style: GoogleFonts.poppins(
+            //           fontWeight: FontWeight.w600,
+            //           fontSize: 18,
+            //         ),
+            //       ),
+            //       const SizedBox(width: 8),
+            //       const Icon(Icons.arrow_forward, size: 20),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ],
@@ -653,26 +654,29 @@ class _HomePageState extends State<HomePage> {
   Widget _buildHeroImage(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
 
-    return Container(
-      height: isMobile ? 300 : 500,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+    return Padding(
+      padding: const EdgeInsets.only(top: 40),
+      child: Container(
+        height: isMobile ? 300 : 500,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Image.network(
+            'https://d20x1nptavktw0.cloudfront.net/wordpress_media/2022/04/Blog-Imagge.jpg',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Image.network(
-          'https://d20x1nptavktw0.cloudfront.net/wordpress_media/2022/04/Blog-Imagge.jpg',
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
         ),
       ),
     );
@@ -832,21 +836,21 @@ class _HomePageState extends State<HomePage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Learn More',
-                        style: GoogleFonts.poppins(
-                          color: accentColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(Icons.arrow_forward, color: accentColor, size: 20),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Learn More',
+                  //       style: GoogleFonts.poppins(
+                  //         color: accentColor,
+                  //         fontWeight: FontWeight.w600,
+                  //         fontSize: 16,
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 8),
+                  //     Icon(Icons.arrow_forward, color: accentColor, size: 20),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
@@ -1767,14 +1771,68 @@ class _HomePageState extends State<HomePage> {
                   context,
                   'INDIRA GARIKAPATI',
                   'MBA (UK)\nManaging Director',
-                  'Driven by dreams, guided by values\n\nIn today\'s competitive world of Education, parent and student aspirations are growing high. ... We value your aspirations with value based teaching-learning process.',
+                  '''Driven by dreams, guided by values
+
+
+In today's competitive world of Education, parent and student aspirations are growing high. Taking advantage of these aspirants, many educational institutions are exploiting the situation and running junior colleges with almost zero quality while charging high fee, low teaching standards in an atmosphere of congession.
+
+Moreover, students living away from bigger cities have to move to distant colleges and stay in hostels, completely unaware that they are risking their academic future and health. Most shockingly, most of them are not successful in getting desired seats and above all losing their health, mental peace, and confidence. I see there is no respect from those colleges towords the desires and aspirations of parents and students. After looking at these desperate situations, we have decided to give value and respect towards the academic goals and aspirations of parents and their children, along with giving them:
+
+• Good environment at hostel
+• Facilities for physical activities for strong health
+• Meditation for sound mind enabling them to achieve their goals
+
+We have established "VALUES Jr. College and NEET Academy" at Gundlabavi near Panthangi Toll plaza, National Higway No.9, Choutuppal, Nalgonda District in 5 acres of land with ultra modern facilities and students taught by india's top most faculty who have proven track record of result and meticulously planned academic program at affordable fee.
+
+I strongly belive every student can achieve their goals provided their inner talents are extracted in a serene atmosphere, academic performance, subjects to healthy mind and body. Happy minds are highly successful. A child with values is more deciplined, determined in achieving goals.
+
+
+"We value your aspirations with value based teaching- learning process"''',
                   'assets/images/staff_indira.jpeg',
                 ),
                 _buildLeaderCard(
                   context,
                   'DURGA PRASAD KUNTA',
                   'B.Tech (IIT, AMIE), Dip. Gen. Medicine (USA), Dip. Child Psychology (USA), Dip. Educational Management (UK), BA Triple Maths, M.Sc. M.Phil.\nAcademic Director',
-                  'Inspiring Passion to Take on Challenges\n\nValues is an initiative to provide an ideal platform for serious IIT-JEE/NEET/SAT aspirants. ... BE PART OF INNOVATION TO BECOME WORLD LEADERS',
+                  '''Inspiring Passion to Take on Challenges
+
+
+Values is an initiative to provide an ideal platform for serious IIT-JEE/NEET/SAT aspirants. It has highly experienced academicians at the helm and a great pool of talented teachers and administrators supported by software experts and educationists.
+
+Our aim is to make the child learn with interest and without external pressure. We encourage child to have mental and physical growth for better understanding of subjects and performance. When the urge to learn and do well comes from within, it will be more productive.
+
+We strongly believe by providing:
+• Serene atmosphere
+• Unconditional support and encouragement
+• Continuous motivation while bringing out inner talent
+
+This enables the child to give their best and perform to their utmost potential.
+
+Every child is unique in their own way and should not be compared with others. They should create their targets and work for achieving them as this is continuous process of their life. It's tough for any human being to keep in continuous pace with the need of the hour, hence they need to be:
+• Observed
+• Guided
+• Supported
+• Directed
+• Motivated
+• Balanced in leading their life
+
+If we can understand the limitations of the child in identifying their abilities and guide them accordingly, he/she will show inherent talent and will exhibit them. They just need to be said "You are the best and we are there with you" - rest is all their time.
+
+
+Good News to student community and parents:
+
+It is made to strongly believe by few institutes and individuals that it needs lot of hardwork and spend tough time to achieve big scores and ranks in competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc. But our experience says otherwise:
+
+We have produced:
+• Many single digits ranks
+• Double digit ranks
+• Triple digit ranks
+• Seat getting ranks
+
+In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., with smart work and entry into top 100 universities of the world. Few of our students have joined universities like MIT/Harvard/Pennsylvania with the best scores and with the scholarships which remained as a dream for many - all achieved with smart work while enjoying the basic needs of life and all the joyful moments of student life.
+
+
+"BE PART OF INNOVATION TO BECOME WORLD LEADERS"''',
                   'assets/images/staff_durga.jpeg',
                 ),
               ],
@@ -1883,7 +1941,8 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Container(
-              width: 600,
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.8,
               padding: const EdgeInsets.all(32),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -1900,7 +1959,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     child: CircleAvatar(
-                      radius: 70,
+                      radius: 40,
                       backgroundImage: AssetImage(image),
                       backgroundColor: AppTheme.coral.withOpacity(0.1),
                     ),
@@ -1910,34 +1969,36 @@ class _HomePageState extends State<HomePage> {
                     name,
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
-                      fontSize: 26,
+                      fontSize: 18,
                       color: AppTheme.deepNavy,
                       letterSpacing: 0.5,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.coral.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        color: AppTheme.coral,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(
+                  //     horizontal: 24,
+                  //     vertical: 12,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //     color: AppTheme.coral.withOpacity(0.1),
+                  //     borderRadius: BorderRadius.circular(24),
+                  //   ),
+                  //   child: Text(
+                  //     title,
+                  //     style: GoogleFonts.poppins(
+                  //       color: AppTheme.coral,
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.w600,
+                  //     ),
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  // ),
                   const SizedBox(height: 28),
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 315,
                     padding: const EdgeInsets.all(28),
                     decoration: BoxDecoration(
                       color: AppTheme.lavender.withOpacity(0.3),
@@ -1947,14 +2008,16 @@ class _HomePageState extends State<HomePage> {
                         width: 1,
                       ),
                     ),
-                    child: Text(
-                      message,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: AppTheme.deepNavy,
-                        height: 1.6,
+                    child: SingleChildScrollView(
+                      child: Text(
+                        message,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: AppTheme.deepNavy,
+                          height: 1.6,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
                     ),
                   ),
                   const SizedBox(height: 28),
@@ -2028,7 +2091,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Expanded(
                     child: MouseRegion(
-                      cursor: SystemMouseCursors.click,
+                      cursor: SystemMouseCursors.basic,
                       child: _buildVisionMissionCard(
                         context,
                         'Vision',
@@ -2041,7 +2104,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(width: 40),
                   Expanded(
                     child: MouseRegion(
-                      cursor: SystemMouseCursors.click,
+                      cursor: SystemMouseCursors.basic,
                       child: _buildVisionMissionCard(
                         context,
                         'Mission',
@@ -2111,20 +2174,20 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 24),
-          Row(
-            children: [
-              Text(
-                'Learn More',
-                style: GoogleFonts.poppins(
-                  color: accentColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Icon(Icons.arrow_forward, color: accentColor, size: 20),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Text(
+          //       'Learn More',
+          //       style: GoogleFonts.poppins(
+          //         color: accentColor,
+          //         fontWeight: FontWeight.w600,
+          //         fontSize: 16,
+          //       ),
+          //     ),
+          //     const SizedBox(width: 8),
+          //     Icon(Icons.arrow_forward, color: accentColor, size: 20),
+          //   ],
+          // ),
         ],
       ),
     );

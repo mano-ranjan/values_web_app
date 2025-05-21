@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBloc()..add(HomeInitialized()),
       child: MaterialApp(
-        title: 'College Website',
+        title: 'Values Junior College',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         builder:
