@@ -1857,6 +1857,131 @@ class _HomePageState extends State<HomePage> {
   }
 
   // 10. Footer
+  // Widget _buildFooter(BuildContext context) {
+  //   final isMobile = MediaQuery.of(context).size.width < 768;
+
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       gradient: LinearGradient(
+  //         begin: Alignment.topLeft,
+  //         end: Alignment.bottomRight,
+  //         colors: [AppTheme.deepNavy, AppTheme.deepNavy.withOpacity(0.9)],
+  //       ),
+  //     ),
+  //     padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 24),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         SvgPicture.asset(
+  //           'assets/svgs/values_logo.svg',
+  //           height: 40,
+  //           color: AppTheme.surfaceColor,
+  //         ),
+  //         const SizedBox(height: 16),
+  //         Text(
+  //           'Values Junior College',
+  //           style: GoogleFonts.poppins(
+  //             color: AppTheme.surfaceColor,
+  //             fontWeight: FontWeight.bold,
+  //             fontSize: 22,
+  //           ),
+  //         ),
+  //         const SizedBox(height: 24),
+  //         if (isMobile) ...[
+  //           _buildFooterContactItem(
+  //             Icons.location_on,
+  //             'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
+  //             AppTheme.coral,
+  //           ),
+  //           const SizedBox(height: 16),
+  //           _buildFooterContactItem(
+  //             Icons.phone,
+  //             'Mob: 98480 00267 / 98480 00289.',
+  //             AppTheme.teal,
+  //           ),
+  //           const SizedBox(height: 16),
+  //           _buildFooterContactItem(
+  //             Icons.email,
+  //             'e-mail: info@valuesacademy.in',
+  //             AppTheme.lavender,
+  //           ),
+  //         ] else
+  //           Column(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               _buildFooterContactItem(
+  //                 Icons.location_on,
+  //                 'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
+  //                 AppTheme.coral,
+  //               ),
+  //               const SizedBox(width: 24),
+  //               _buildFooterContactItem(
+  //                 Icons.phone,
+  //                 'Mob: 98480 00267 / 98480 00289.',
+  //                 AppTheme.teal,
+  //               ),
+  //               const SizedBox(width: 24),
+  //               _buildFooterContactItem(
+  //                 Icons.email,
+  //                 'e-mail: info@valuesacademy.in',
+  //                 AppTheme.lavender,
+  //               ),
+  //             ],
+  //           ),
+  //         const SizedBox(height: 24),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             InkWell(
+  //               onTap:
+  //                   () => _launchSocialMedia(
+  //                     'https://www.linkedin.com/in/values-academy-aa122b365/',
+  //                   ),
+  //               child: Image.asset('assets/images/linkedin.png', height: 28),
+  //             ),
+  //             const SizedBox(width: 16),
+  //             InkWell(
+  //               onTap:
+  //                   () => _launchSocialMedia(
+  //                     'https://www.instagram.com/academyvalues/?igsh=cmoyMWN4MWszM3E%3D#',
+  //                   ),
+  //               child: Image.asset('assets/images/instagram.png', height: 28),
+  //             ),
+  //           ],
+  //         ),
+
+  //         const SizedBox(height: 24),
+  //         Text(
+  //           '© 2025 Values Junior College. All rights reserved.',
+  //           style: GoogleFonts.poppins(
+  //             color: AppTheme.surfaceColor.withOpacity(0.7),
+  //           ),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // Widget _buildFooterContactItem(IconData icon, String text, Color iconColor) {
+  //   return Row(
+  //     mainAxisSize: MainAxisSize.min,
+  //     children: [
+  //       Icon(icon, color: iconColor, size: 20),
+  //       const SizedBox(width: 8),
+  //       Flexible(
+  //         child: SelectableText(
+  //           text,
+  //           style: GoogleFonts.poppins(
+  //             color: AppTheme.surfaceColor.withOpacity(0.8),
+  //           ),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
   Widget _buildFooter(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
 
@@ -1865,120 +1990,156 @@ class _HomePageState extends State<HomePage> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppTheme.deepNavy, AppTheme.deepNavy.withOpacity(0.9)],
+          colors: [AppTheme.deepNavy, AppTheme.deepNavy.withOpacity(0.95)],
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/svgs/values_logo.svg',
-            height: 40,
-            color: AppTheme.surfaceColor,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Values Junior College',
-            style: GoogleFonts.poppins(
-              color: AppTheme.surfaceColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
-          ),
-          const SizedBox(height: 24),
-          if (isMobile) ...[
-            _buildFooterContactItem(
-              Icons.location_on,
-              'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
-              AppTheme.coral,
-            ),
-            const SizedBox(height: 16),
-            _buildFooterContactItem(
-              Icons.phone,
-              'Mob: 98480 00267 / 98480 00289.',
-              AppTheme.teal,
-            ),
-            const SizedBox(height: 16),
-            _buildFooterContactItem(
-              Icons.email,
-              'e-mail: info@valuesacademy.in',
-              AppTheme.lavender,
-            ),
-          ] else
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      child: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Hero(
+                tag: 'logo',
+                child: Image.asset(
+                  'assets/images/values_logo.png',
+                  height: 48,
+                  color: AppTheme.surfaceColor,
+                ),
+              ),
+              // const SizedBox(height: 24),
+              // Text(
+              //   'Values Junior College',
+              //   style: GoogleFonts.poppins(
+              //     color: AppTheme.surfaceColor,
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: 24,
+              //   ),
+              // ),
+              const SizedBox(height: 40),
+              if (isMobile) ...[
                 _buildFooterContactItem(
                   Icons.location_on,
                   'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
                   AppTheme.coral,
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(height: 24),
                 _buildFooterContactItem(
                   Icons.phone,
-                  'Mob: 98480 00267 / 98480 00289.',
+                  'Mob: 98480 00267 / 98480 00289',
                   AppTheme.teal,
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(height: 24),
                 _buildFooterContactItem(
                   Icons.email,
                   'e-mail: info@valuesacademy.in',
                   AppTheme.lavender,
                 ),
-              ],
-            ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap:
-                    () => _launchSocialMedia(
-                      'https://www.linkedin.com/in/values-academy-aa122b365/',
+              ] else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: _buildFooterContactItem(
+                        Icons.location_on,
+                        'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
+                        AppTheme.coral,
+                      ),
                     ),
-                child: Image.asset('assets/images/linkedin.png', height: 28),
-              ),
-              const SizedBox(width: 16),
-              InkWell(
-                onTap:
-                    () => _launchSocialMedia(
-                      'https://www.instagram.com/academyvalues/?igsh=cmoyMWN4MWszM3E%3D#',
+                    const SizedBox(width: 40),
+                    Expanded(
+                      child: _buildFooterContactItem(
+                        Icons.phone,
+                        'Mob: 98480 00267 / 98480 00289',
+                        AppTheme.teal,
+                      ),
                     ),
-                child: Image.asset('assets/images/instagram.png', height: 28),
+                    const SizedBox(width: 40),
+                    Expanded(
+                      child: _buildFooterContactItem(
+                        Icons.email,
+                        'e-mail: info@valuesacademy.in',
+                        AppTheme.lavender,
+                      ),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 56),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: AppTheme.surfaceColor.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.copyright,
+                      color: AppTheme.surfaceColor.withOpacity(0.7),
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${DateTime.now().year} Values Junior College. All rights reserved.',
+                      style: GoogleFonts.poppins(
+                        color: AppTheme.surfaceColor.withOpacity(0.7),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-
-          const SizedBox(height: 24),
-          Text(
-            '© 2025 Values Junior College. All rights reserved.',
-            style: GoogleFonts.poppins(
-              color: AppTheme.surfaceColor.withOpacity(0.7),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildFooterContactItem(IconData icon, String text, Color iconColor) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: iconColor, size: 20),
-        const SizedBox(width: 8),
-        Flexible(
-          child: SelectableText(
-            text,
-            style: GoogleFonts.poppins(
-              color: AppTheme.surfaceColor.withOpacity(0.8),
-            ),
-            textAlign: TextAlign.center,
-          ),
+  Widget _buildFooterContactItem(
+    IconData icon,
+    String text,
+    Color accentColor,
+  ) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: accentColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: accentColor.withOpacity(0.2), width: 1),
         ),
-      ],
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: accentColor.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: accentColor, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: SelectableText(
+                text,
+                style: GoogleFonts.poppins(
+                  color: AppTheme.surfaceColor,
+                  fontSize: 16,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
