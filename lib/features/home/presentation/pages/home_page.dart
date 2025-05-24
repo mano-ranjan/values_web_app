@@ -825,6 +825,8 @@ class _HomePageState extends State<HomePage> {
       },
     ];
     return Container(
+      height: 700,
+      width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -832,52 +834,67 @@ class _HomePageState extends State<HomePage> {
           colors: [AppTheme.lavender, AppTheme.lavender.withOpacity(0.8)],
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 56),
-      child: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.coral.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Text(
-                  'Explore Values',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32,
-                    color: AppTheme.deepNavy,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 32,
-                runSpacing: 32,
-                children:
-                    audiences
-                        .map(
-                          (aud) => _buildAudienceCard(
-                            context,
-                            aud['label'] as String,
-                            aud['icon'] as IconData,
-                            aud['description'] as String,
-                            aud['color'] as Color,
-                          ),
-                        )
-                        .toList(),
-              ),
-            ],
+      // padding: const EdgeInsets.symmetric(vertical: 56),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Opacity(
+            opacity: 0.5,
+            child: Image.network(
+              'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/background/vigneshwar-rajkumar-9TSYyblXGEA-unsplash.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
-        ),
+          Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.deepNavy.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Text(
+                      'Explore Values',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                        color: AppTheme.deepNavy,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 32,
+                    runSpacing: 32,
+                    children:
+                        audiences
+                            .map(
+                              (aud) => _buildAudienceCard(
+                                context,
+                                aud['label'] as String,
+                                aud['icon'] as IconData,
+                                aud['description'] as String,
+                                aud['color'] as Color,
+                              ),
+                            )
+                            .toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -890,11 +907,11 @@ class _HomePageState extends State<HomePage> {
     Color accentColor,
   ) {
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor: SystemMouseCursors.basic,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         width: 280,
-        height: 380,
+        height: 340,
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(24),
@@ -1070,11 +1087,11 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.bottomRight,
+          end: Alignment.topLeft,
           colors: [
-            AppTheme.lavender.withOpacity(0.3),
-            AppTheme.lavender.withOpacity(0.1),
+            AppTheme.deepNavy.withOpacity(1),
+            AppTheme.deepNavy.withOpacity(0.1),
           ],
         ),
       ),
@@ -2260,97 +2277,124 @@ class _HomePageState extends State<HomePage> {
   // LEADERSHIP SECTION
   Widget _buildLeadershipSection(BuildContext context) {
     return Container(
+      height: 600,
+      width: double.infinity,
       color: AppTheme.lavender,
-      padding: const EdgeInsets.symmetric(vertical: 56),
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              'Leadership',
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                color: AppTheme.deepNavy,
-              ),
+      // padding: const EdgeInsets.symmetric(vertical: 56),
+      child: Stack(
+        children: [
+          Opacity(
+            opacity: 0.5,
+            child: Image.network(
+              'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/background/aswin-thomas-bony-SPO0ST4nVbY-unsplash.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
             ),
-            const SizedBox(height: 32),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 32,
-              runSpacing: 32,
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildLeaderCard(
-                  context,
-                  'INDIRA GARIKAPATI',
-                  'MBA (UK)\nManaging Director',
-                  '''Driven by dreams, guided by values
-
-
-In today's competitive world of Education, parent and student aspirations are growing high. Taking advantage of these aspirants, many educational institutions are exploiting the situation and running junior colleges with almost zero quality while charging high fee, low teaching standards in an atmosphere of congession.
-
-Moreover, students living away from bigger cities have to move to distant colleges and stay in hostels, completely unaware that they are risking their academic future and health. Most shockingly, most of them are not successful in getting desired seats and above all losing their health, mental peace, and confidence. I see there is no respect from those colleges towords the desires and aspirations of parents and students. After looking at these desperate situations, we have decided to give value and respect towards the academic goals and aspirations of parents and their children, along with giving them:
-
-• Good environment at hostel
-• Facilities for physical activities for strong health
-• Meditation for sound mind enabling them to achieve their goals
-
-We have established "VALUES Jr. College and NEET Academy" at Gundlabavi near Panthangi Toll plaza, National Higway No.9, Choutuppal, Nalgonda District in 5 acres of land with ultra modern facilities and students taught by india's top most faculty who have proven track record of result and meticulously planned academic program at affordable fee.
-
-I strongly belive every student can achieve their goals provided their inner talents are extracted in a serene atmosphere, academic performance, subjects to healthy mind and body. Happy minds are highly successful. A child with values is more deciplined, determined in achieving goals.
-
-
-"We value your aspirations with value based teaching- learning process"''',
-                  'assets/images/staff_indira.jpeg',
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppTheme.deepNavy.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text(
+                    'Leadership',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32,
+                      color: AppTheme.deepNavy,
+                    ),
+                  ),
                 ),
-                _buildLeaderCard(
-                  context,
-                  'DURGA PRASAD KUNTA',
-                  'B.Tech (IIT, AMIE), Dip. Gen. Medicine (USA), Dip. Child Psychology (USA), Dip. Educational Management (UK), BA Triple Maths, M.Sc. M.Phil.\nAcademic Director',
-                  '''Inspiring Passion to Take on Challenges
 
-
-Values is an initiative to provide an ideal platform for serious IIT-JEE/NEET/SAT aspirants. It has highly experienced academicians at the helm and a great pool of talented teachers and administrators supported by software experts and educationists.
-
-Our aim is to make the child learn with interest and without external pressure. We encourage child to have mental and physical growth for better understanding of subjects and performance. When the urge to learn and do well comes from within, it will be more productive.
-
-We strongly believe by providing:
-• Serene atmosphere
-• Unconditional support and encouragement
-• Continuous motivation while bringing out inner talent
-
-This enables the child to give their best and perform to their utmost potential.
-
-Every child is unique in their own way and should not be compared with others. They should create their targets and work for achieving them as this is continuous process of their life. It's tough for any human being to keep in continuous pace with the need of the hour, hence they need to be:
-• Observed
-• Guided
-• Supported
-• Directed
-• Motivated
-• Balanced in leading their life
-
-If we can understand the limitations of the child in identifying their abilities and guide them accordingly, he/she will show inherent talent and will exhibit them. They just need to be said "You are the best and we are there with you" - rest is all their time.
-
-
-Good News to student community and parents:
-
-It is made to strongly believe by few institutes and individuals that it needs lot of hardwork and spend tough time to achieve big scores and ranks in competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc. But our experience says otherwise:
-
-We have produced:
-• Many single digits ranks
-• Double digit ranks
-• Triple digit ranks
-• Seat getting ranks
-
-In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., with smart work and entry into top 100 universities of the world. Few of our students have joined universities like MIT/Harvard/Pennsylvania with the best scores and with the scholarships which remained as a dream for many - all achieved with smart work while enjoying the basic needs of life and all the joyful moments of student life.
-
-
-"BE PART OF INNOVATION TO BECOME WORLD LEADERS"''',
-                  'assets/images/staff_durga.jpeg',
+                const SizedBox(height: 32),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 32,
+                  runSpacing: 32,
+                  children: [
+                    _buildLeaderCard(
+                      context,
+                      'INDIRA GARIKAPATI',
+                      'MBA (UK)\nManaging Director',
+                      '''Driven by dreams, guided by values
+          
+          
+          In today's competitive world of Education, parent and student aspirations are growing high. Taking advantage of these aspirants, many educational institutions are exploiting the situation and running junior colleges with almost zero quality while charging high fee, low teaching standards in an atmosphere of congession.
+          
+          Moreover, students living away from bigger cities have to move to distant colleges and stay in hostels, completely unaware that they are risking their academic future and health. Most shockingly, most of them are not successful in getting desired seats and above all losing their health, mental peace, and confidence. I see there is no respect from those colleges towords the desires and aspirations of parents and students. After looking at these desperate situations, we have decided to give value and respect towards the academic goals and aspirations of parents and their children, along with giving them:
+          
+          • Good environment at hostel
+          • Facilities for physical activities for strong health
+          • Meditation for sound mind enabling them to achieve their goals
+          
+          We have established "VALUES Jr. College and NEET Academy" at Gundlabavi near Panthangi Toll plaza, National Higway No.9, Choutuppal, Nalgonda District in 5 acres of land with ultra modern facilities and students taught by india's top most faculty who have proven track record of result and meticulously planned academic program at affordable fee.
+          
+          I strongly belive every student can achieve their goals provided their inner talents are extracted in a serene atmosphere, academic performance, subjects to healthy mind and body. Happy minds are highly successful. A child with values is more deciplined, determined in achieving goals.
+          
+          
+          "We value your aspirations with value based teaching- learning process"''',
+                      'assets/images/staff_indira.jpeg',
+                    ),
+                    _buildLeaderCard(
+                      context,
+                      'DURGA PRASAD KUNTA',
+                      'B.Tech (IIT, AMIE), Dip. Gen. Medicine (USA), Dip. Child Psychology (USA), Dip. Educational Management (UK), BA Triple Maths, M.Sc. M.Phil.\nAcademic Director',
+                      '''Inspiring Passion to Take on Challenges
+          
+          
+          Values is an initiative to provide an ideal platform for serious IIT-JEE/NEET/SAT aspirants. It has highly experienced academicians at the helm and a great pool of talented teachers and administrators supported by software experts and educationists.
+          
+          Our aim is to make the child learn with interest and without external pressure. We encourage child to have mental and physical growth for better understanding of subjects and performance. When the urge to learn and do well comes from within, it will be more productive.
+          
+          We strongly believe by providing:
+          • Serene atmosphere
+          • Unconditional support and encouragement
+          • Continuous motivation while bringing out inner talent
+          
+          This enables the child to give their best and perform to their utmost potential.
+          
+          Every child is unique in their own way and should not be compared with others. They should create their targets and work for achieving them as this is continuous process of their life. It's tough for any human being to keep in continuous pace with the need of the hour, hence they need to be:
+          • Observed
+          • Guided
+          • Supported
+          • Directed
+          • Motivated
+          • Balanced in leading their life
+          
+          If we can understand the limitations of the child in identifying their abilities and guide them accordingly, he/she will show inherent talent and will exhibit them. They just need to be said "You are the best and we are there with you" - rest is all their time.
+          
+          
+          Good News to student community and parents:
+          
+          It is made to strongly believe by few institutes and individuals that it needs lot of hardwork and spend tough time to achieve big scores and ranks in competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc. But our experience says otherwise:
+          
+          We have produced:
+          • Many single digits ranks
+          • Double digit ranks
+          • Triple digit ranks
+          • Seat getting ranks
+          
+          In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., with smart work and entry into top 100 universities of the world. Few of our students have joined universities like MIT/Harvard/Pennsylvania with the best scores and with the scholarships which remained as a dream for many - all achieved with smart work while enjoying the basic needs of life and all the joyful moments of student life.
+          
+          
+          "BE PART OF INNOVATION TO BECOME WORLD LEADERS"''',
+                      'assets/images/staff_durga.jpeg',
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -2787,7 +2831,7 @@ In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., wit
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppTheme.lavender.withOpacity(0.3),
+            AppTheme.deepNavy.withOpacity(1),
             AppTheme.lavender.withOpacity(0.1),
           ],
         ),
@@ -2805,7 +2849,7 @@ In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., wit
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: AppTheme.coral.withOpacity(0.1),
+                  color: AppTheme.backgroundColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
@@ -2813,7 +2857,7 @@ In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., wit
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
                     fontSize: 32,
-                    color: AppTheme.deepNavy,
+                    color: AppTheme.surfaceColor,
                   ),
                 ),
               ),
@@ -2822,7 +2866,7 @@ In all competitive examinations like IIT-JEE/NEET/AIIMS/AIPMT/AFMC/SAT etc., wit
                 'Learn from the Best in the Industry',
                 style: GoogleFonts.poppins(
                   fontSize: 20,
-                  color: AppTheme.deepNavy.withOpacity(0.7),
+                  color: AppTheme.surfaceColor.withOpacity(0.5),
                 ),
               ),
               const SizedBox(height: 60),
