@@ -3222,7 +3222,7 @@ class _HomePageState extends State<HomePage> {
       {
         'type': 'image',
         'image':
-            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images//DSC_0078.JPG',
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/DSC_0078.JPG',
         'caption': 'Campus Life',
         'description':
             'Experience the vibrant campus life at Values Junior College',
@@ -3237,7 +3237,7 @@ class _HomePageState extends State<HomePage> {
       {
         'type': 'image',
         'image':
-            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images//DSC_0079.JPG',
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/DSC_0079.JPG',
         'caption': 'Learning Environment',
         'description':
             'Modern classrooms designed for optimal learning experience',
@@ -3253,7 +3253,63 @@ class _HomePageState extends State<HomePage> {
       {
         'type': 'image',
         'image':
-            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images//WhatsApp%20Image%202025-05-21%20at%2011.12.55%20AM.jpeg',
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/tra-nguyen-TVSRWmnW8Us-unsplash.jpg',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/WhatsApp%20Image%202025-05-21%20at%2011.12.55%20AM.jpeg',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/college.png',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/gallery_1.png',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/gallery_2.png',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/gallery_3.png',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/gallery_4.jpeg',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/gallery_5.jpeg',
+        'caption': 'Campus Facilities',
+        'description': 'Explore our world-class infrastructure and amenities',
+      },
+      {
+        'type': 'image',
+        'image':
+            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/gallery_6.jpeg',
         'caption': 'Campus Facilities',
         'description': 'Explore our world-class infrastructure and amenities',
       },
