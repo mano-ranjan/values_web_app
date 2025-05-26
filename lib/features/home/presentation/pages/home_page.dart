@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:values_web_app/features/visitor/widgets/visitor_form.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shimmer/shimmer.dart';
 
 class _GallerySlider extends StatefulWidget {
   final List<Map<String, String>> items;
@@ -20,40 +21,12 @@ class _GallerySliderState extends State<_GallerySlider> {
   int _currentPage = 0;
   late final PageController _controller;
   late final List<Map<String, String>> items;
-  late final PageController pageController;
 
   @override
   void initState() {
     super.initState();
     items = widget.items;
     _controller = PageController();
-  }
-
-  Future<void> _launchSocialMedia(String url) async {
-    try {
-      final Uri uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Could not open the link'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error opening link: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
   }
 
   @override
@@ -77,11 +50,7 @@ class _GallerySliderState extends State<_GallerySlider> {
           },
           itemBuilder: (context, index) {
             final item = items[index];
-            if (item['type'] == 'video') {
-              return _buildVideoSlide(item['videoUrl']!);
-            } else {
-              return _buildImageSlide(item['image']!);
-            }
+            return _buildImageSlide(item['image']!);
           },
         ),
         // Left Arrow
@@ -172,97 +141,79 @@ class _GallerySliderState extends State<_GallerySlider> {
   Widget _buildImageSlide(String imagePath) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(24),
-      child: Image.network(
-        imagePath,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value:
-                  loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-              color: AppTheme.coral,
-            ),
-          );
-        },
-        errorBuilder: (context, error, stackTrace) {
-          return Container(
-            color: AppTheme.lavender.withOpacity(0.3),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.error_outline, color: AppTheme.coral, size: 48),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Failed to load image',
-                    style: GoogleFonts.poppins(
-                      color: AppTheme.deepNavy,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildVideoSlide(String videoUrl) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
       child: Stack(
-        alignment: Alignment.center,
+        fit: StackFit.expand,
         children: [
-          Container(
-            color: Colors.black,
-            child: Center(
-              child: IconButton(
-                icon: const Icon(
-                  Icons.play_circle_fill,
-                  color: Colors.white,
-                  size: 80,
+          Image.network(
+            imagePath,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Shimmer.fromColors(
+                baseColor: AppTheme.lavender.withOpacity(0.3),
+                highlightColor: AppTheme.lavender.withOpacity(0.5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.lavender.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image_outlined,
+                        size: 48,
+                        color: AppTheme.deepNavy.withOpacity(0.3),
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        width: 120,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: AppTheme.deepNavy.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                onPressed: () {
-                  _launchSocialMedia(videoUrl);
-                },
-              ),
-            ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: AppTheme.lavender.withOpacity(0.3),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        color: AppTheme.coral,
+                        size: 48,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Failed to load image',
+                        style: GoogleFonts.poppins(
+                          color: AppTheme.deepNavy,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
-          Positioned(
-            bottom: 16,
-            left: 16,
-            right: 16,
+          // Gradient overlay for better text visibility
+          Positioned.fill(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.play_arrow,
-                    color: AppTheme.surfaceColor,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Click to watch video',
-                    style: GoogleFonts.poppins(
-                      color: AppTheme.surfaceColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.3)],
+                ),
               ),
             ),
           ),
@@ -841,7 +792,7 @@ class _HomePageState extends State<HomePage> {
           Opacity(
             opacity: 0.5,
             child: Image.network(
-              'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/background/vigneshwar-rajkumar-9TSYyblXGEA-unsplash.jpg',
+              'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/sam-mgrdichian-wrfj-SRaB1Q-unsplash.jpg',
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
@@ -1874,131 +1825,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   // 10. Footer
-  // Widget _buildFooter(BuildContext context) {
-  //   final isMobile = MediaQuery.of(context).size.width < 768;
-
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       gradient: LinearGradient(
-  //         begin: Alignment.topLeft,
-  //         end: Alignment.bottomRight,
-  //         colors: [AppTheme.deepNavy, AppTheme.deepNavy.withOpacity(0.9)],
-  //       ),
-  //     ),
-  //     padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 24),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       children: [
-  //         SvgPicture.asset(
-  //           'assets/svgs/values_logo.svg',
-  //           height: 40,
-  //           color: AppTheme.surfaceColor,
-  //         ),
-  //         const SizedBox(height: 16),
-  //         Text(
-  //           'Values Junior College',
-  //           style: GoogleFonts.poppins(
-  //             color: AppTheme.surfaceColor,
-  //             fontWeight: FontWeight.bold,
-  //             fontSize: 22,
-  //           ),
-  //         ),
-  //         const SizedBox(height: 24),
-  //         if (isMobile) ...[
-  //           _buildFooterContactItem(
-  //             Icons.location_on,
-  //             'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
-  //             AppTheme.coral,
-  //           ),
-  //           const SizedBox(height: 16),
-  //           _buildFooterContactItem(
-  //             Icons.phone,
-  //             'Mob: 98480 00267 / 98480 00289.',
-  //             AppTheme.teal,
-  //           ),
-  //           const SizedBox(height: 16),
-  //           _buildFooterContactItem(
-  //             Icons.email,
-  //             'e-mail: info@valuesacademy.in',
-  //             AppTheme.lavender,
-  //           ),
-  //         ] else
-  //           Column(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               _buildFooterContactItem(
-  //                 Icons.location_on,
-  //                 'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
-  //                 AppTheme.coral,
-  //               ),
-  //               const SizedBox(width: 24),
-  //               _buildFooterContactItem(
-  //                 Icons.phone,
-  //                 'Mob: 98480 00267 / 98480 00289.',
-  //                 AppTheme.teal,
-  //               ),
-  //               const SizedBox(width: 24),
-  //               _buildFooterContactItem(
-  //                 Icons.email,
-  //                 'e-mail: info@valuesacademy.in',
-  //                 AppTheme.lavender,
-  //               ),
-  //             ],
-  //           ),
-  //         const SizedBox(height: 24),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             InkWell(
-  //               onTap:
-  //                   () => _launchSocialMedia(
-  //                     'https://www.linkedin.com/in/values-academy-aa122b365/',
-  //                   ),
-  //               child: Image.asset('assets/images/linkedin.png', height: 28),
-  //             ),
-  //             const SizedBox(width: 16),
-  //             InkWell(
-  //               onTap:
-  //                   () => _launchSocialMedia(
-  //                     'https://www.instagram.com/academyvalues/?igsh=cmoyMWN4MWszM3E%3D#',
-  //                   ),
-  //               child: Image.asset('assets/images/instagram.png', height: 28),
-  //             ),
-  //           ],
-  //         ),
-
-  //         const SizedBox(height: 24),
-  //         Text(
-  //           '© 2025 Values Junior College. All rights reserved.',
-  //           style: GoogleFonts.poppins(
-  //             color: AppTheme.surfaceColor.withOpacity(0.7),
-  //           ),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildFooterContactItem(IconData icon, String text, Color iconColor) {
-  //   return Row(
-  //     mainAxisSize: MainAxisSize.min,
-  //     children: [
-  //       Icon(icon, color: iconColor, size: 20),
-  //       const SizedBox(width: 8),
-  //       Flexible(
-  //         child: SelectableText(
-  //           text,
-  //           style: GoogleFonts.poppins(
-  //             color: AppTheme.surfaceColor.withOpacity(0.8),
-  //           ),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   Widget _buildFooter(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
 
@@ -2025,62 +1851,56 @@ class _HomePageState extends State<HomePage> {
                   color: AppTheme.surfaceColor,
                 ),
               ),
-              // const SizedBox(height: 24),
-              // Text(
-              //   'Values Junior College',
-              //   style: GoogleFonts.poppins(
-              //     color: AppTheme.surfaceColor,
-              //     fontWeight: FontWeight.bold,
-              //     fontSize: 24,
-              //   ),
-              // ),
               const SizedBox(height: 40),
-              if (isMobile) ...[
-                _buildFooterContactItem(
-                  Icons.location_on,
-                  'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
-                  AppTheme.coral,
-                ),
-                const SizedBox(height: 24),
-                _buildFooterContactItem(
-                  Icons.phone,
-                  'Mob: 98480 00267 / 98480 00289',
-                  AppTheme.teal,
-                ),
-                const SizedBox(height: 24),
-                _buildFooterContactItem(
-                  Icons.email,
-                  'e-mail: info@valuesacademy.in',
-                  AppTheme.lavender,
-                ),
-              ] else
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: _buildFooterContactItem(
-                        Icons.location_on,
+              if (isMobile)
+                _buildCombinedContactBox([
+                  {
+                    'icon': Icons.location_on,
+                    'text':
                         'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
-                        AppTheme.coral,
-                      ),
+                    'color': AppTheme.coral,
+                  },
+                  {
+                    'icon': Icons.phone,
+                    'text': 'Mob: 98480 00267 / 98480 00289',
+                    'color': AppTheme.teal,
+                  },
+                  {
+                    'icon': Icons.email,
+                    'text': 'e-mail: info@valuesacademy.in',
+                    'color': AppTheme.lavender,
+                  },
+                ])
+              else
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                    color: AppTheme.deepNavy.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: AppTheme.surfaceColor.withOpacity(0.1),
+                      width: 1,
                     ),
-                    const SizedBox(width: 40),
-                    Expanded(
-                      child: _buildFooterContactItem(
-                        Icons.phone,
-                        'Mob: 98480 00267 / 98480 00289',
-                        AppTheme.teal,
-                      ),
-                    ),
-                    const SizedBox(width: 40),
-                    Expanded(
-                      child: _buildFooterContactItem(
-                        Icons.email,
-                        'e-mail: info@valuesacademy.in',
-                        AppTheme.lavender,
-                      ),
-                    ),
-                  ],
+                  ),
+                  child: _buildCombinedContactBox([
+                    {
+                      'icon': Icons.location_on,
+                      'text':
+                          'Gundlabavi near Panthangi Toll plaza, National Highway No.9, Choutuppal, Nalgonda District',
+                      'color': AppTheme.coral,
+                    },
+                    {
+                      'icon': Icons.phone,
+                      'text': 'Mob: 98480 00267 / 98480 00289',
+                      'color': AppTheme.teal,
+                    },
+                    {
+                      'icon': Icons.email,
+                      'text': 'e-mail: info@valuesacademy.in',
+                      'color': AppTheme.lavender,
+                    },
+                  ]),
                 ),
               const SizedBox(height: 56),
               Container(
@@ -2119,44 +1939,58 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildFooterContactItem(
-    IconData icon,
-    String text,
-    Color accentColor,
-  ) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: accentColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: accentColor.withOpacity(0.2), width: 1),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: accentColor.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: accentColor, size: 24),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: SelectableText(
-                text,
-                style: GoogleFonts.poppins(
-                  color: AppTheme.surfaceColor,
-                  fontSize: 16,
-                  height: 1.4,
+  Widget _buildCombinedContactBox(List<Map<String, dynamic>> items) {
+    return Column(
+      children:
+          items.map((item) {
+            final isLast = items.last == item;
+            return Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: (item['color'] as Color).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: (item['color'] as Color).withOpacity(0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: (item['color'] as Color).withOpacity(0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          item['icon'] as IconData,
+                          color: item['color'] as Color,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: SelectableText(
+                          item['text'] as String,
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.surfaceColor,
+                            fontSize: 16,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
+                if (!isLast) const SizedBox(height: 16),
+              ],
+            );
+          }).toList(),
     );
   }
 
@@ -3228,27 +3062,12 @@ class _HomePageState extends State<HomePage> {
             'Experience the vibrant campus life at Values Junior College',
       },
       {
-        'type': 'video',
-        'videoUrl':
-            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/videos//WhatsApp%20Video%202025-05-21%20at%2011.12.38%20AM.mp4',
-        'caption': 'Campus Tour',
-        'description': 'Take a virtual tour of our state-of-the-art facilities',
-      },
-      {
         'type': 'image',
         'image':
             'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/images/gallery/DSC_0079.JPG',
         'caption': 'Learning Environment',
         'description':
             'Modern classrooms designed for optimal learning experience',
-      },
-      {
-        'type': 'video',
-        'videoUrl':
-            'https://vswnpmyjvwpidoxfneed.supabase.co/storage/v1/object/public/videos//WhatsApp%20Video%202025-05-21%20at%2011.13.03%20AM.mp4',
-        'caption': 'Student Activities',
-        'description':
-            'Watch our students engage in various activities and events',
       },
       {
         'type': 'image',
