@@ -1903,6 +1903,55 @@ class _HomePageState extends State<HomePage> {
                   ]),
                 ),
               const SizedBox(height: 56),
+              // Social Media Links
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: AppTheme.surfaceColor.withOpacity(0.1),
+                      width: 1,
+                    ),
+                    bottom: BorderSide(
+                      color: AppTheme.surfaceColor.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildSocialMediaButton(
+                      context,
+                      "assets/images/facebook.png",
+                      'https://www.facebook.com/valuesacademyjrcollege',
+                      AppTheme.coral,
+                    ),
+                    const SizedBox(width: 24),
+                    _buildSocialMediaButton(
+                      context,
+                      "assets/images/instagram.png",
+                      'https://www.instagram.com/academyvalues/',
+                      AppTheme.teal,
+                    ),
+                    const SizedBox(width: 24),
+                    _buildSocialMediaButton(
+                      context,
+                      "assets/images/youtube.png",
+                      'https://www.youtube.com/@Valuesjuniorcollege',
+                      AppTheme.lavender,
+                    ),
+                    const SizedBox(width: 24),
+                    _buildSocialMediaButton(
+                      context,
+                      "assets/images/linkedin.png",
+                      'https://www.linkedin.com/in/values-academy-aa122b365/',
+                      AppTheme.deepNavy,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 decoration: BoxDecoration(
@@ -3294,5 +3343,20 @@ class _HomePageState extends State<HomePage> {
         );
       }
     }
+  }
+
+  Widget _buildSocialMediaButton(
+    BuildContext context,
+    String icon,
+    String url,
+    Color color,
+  ) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => _launchSocialMedia(url),
+        child: Image.asset(icon, width: 42, height: 42),
+      ),
+    );
   }
 }
